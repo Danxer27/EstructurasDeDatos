@@ -59,6 +59,7 @@ class List {
   void sortDataBubbleEx(int(const T&, const T&));
   void sortDataInsert();
   void sortDataSelect();
+  void sortDataSelectEx(int(const T&, const T&));
   void sortDataShellCiura();
   void sortDataShellCiuraEx(int(const T&, const T&));
   void sortDataShellFactor();
@@ -326,6 +327,28 @@ void List<T,ARRAYSIZE>::sortDataSelect(){
     i++;
   }
 }
+
+template<class T, int ARRAYSIZE>
+void List<T,ARRAYSIZE>::sortDataSelectEx(int cpm(const T& a, const T& b)){
+  int i(0), j, m;
+
+  while(i < this->last){
+    m = i;
+    j = i + 1;
+
+    while(j <= this->last){
+      if(cmp(this->data[j], this->data[m]) > 0){
+        m = j;
+      }
+      j++;
+    }
+    if(m != 1){
+      this->swapData(this->data[i], this->data[m]);
+    }
+    i++;
+  }
+}
+
 
 template<class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataShellFactor(){
