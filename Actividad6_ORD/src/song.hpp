@@ -37,12 +37,12 @@ class Song {
   bool operator<(const Song&) const;
   bool operator<=(const Song&) const;
 
-  int compareTo(const Song&);
-  int compareByName(const Song&, const Song&);
-  int compareByAuthor(const Song&, const Song&);
-  int compareByInterpreter(const Song&, const Song&);
-  int compareByranking(const Song&, const Song&);
-  int compareByMP3File(const Song&, const Song&);
+  static int compareTo(const Song&);
+  static int compareByName(const Song&, const Song&);
+  static int compareByAuthor(const Song&, const Song&);
+  static int compareByInterpreter(const Song&, const Song&);
+  static int compareByranking(const Song&, const Song&);
+  static int compareByMP3File(const Song&, const Song&);
 
   static void setState(const int&);
 };

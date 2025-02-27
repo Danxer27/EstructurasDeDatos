@@ -58,6 +58,7 @@ class List {
   void sortDataBubble();
   void sortDataBubbleEx(int(const T&, const T&));
   void sortDataInsert();
+  void sortDataInsertEx(int(const T&, const T&));
   void sortDataSelect();
   void sortDataSelectEx(int(const T&, const T&));
   void sortDataShellCiura();
@@ -230,6 +231,11 @@ List<T,ARRAYSIZE> List<T,ARRAYSIZE>::operator=(const List<T,ARRAYSIZE>& l) {
 }
 
 
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //#####METODOS DE SORTING ######
 //REVISAR LA PRIMERA PARTE 
 template <class T, int ARRAYSIZE>
@@ -238,8 +244,6 @@ void List<T,ARRAYSIZE>::swapData(T& a, T& b){
     b = a;
     a = aux;
 } 
-
-
 
 template <class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataBubble(){
@@ -260,6 +264,27 @@ void List<T,ARRAYSIZE>::sortDataBubble(){
 
     } while(flag);
 }
+
+template <class T, int ARRAYSIZE>
+void List<T,ARRAYSIZE>::sortDataBubbleEx(int cmp(const T&, const T&)){
+    int i(this->last), j;
+    bool flag;
+
+    do{
+        j = 0;
+        flag = false;
+        while(j < i){
+            if(cmp(this->data[j], this->data[j + 1]) > 0){
+                this->swapData(data[j], data[j+1]);
+                flag = true;
+            }
+            j++;
+        }
+        i--;
+
+    } while(flag);
+}
+
 
 template <class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataInsert(){
@@ -285,23 +310,25 @@ void List<T,ARRAYSIZE>::sortDataInsert(){
 }
 
 template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataBubbleEx(int cmp(const T& a, const T& b)){
-    int i(this->last), j;
-    bool flag;
+void List<T,ARRAYSIZE>::sortDataInsert(){
+    int i(1), j;
+    T aux;
 
-    do{
-        j = 0;
-        flag = false;
-        while(j < i){
-            if(cmp(this->data[j], this->data[j + 1]) > 0){
-                this->swapData(data[j], data[j+1]);
-                flag = true;
-            }
-            j++;
+    while(i <= this->last){
+        aux = this->data[i];
+
+        j = i;
+
+        while(j > 0 && aux > this->data[j - 1]){
+            this->data[j] = this->data[j - 1];
+
+            j--;
         }
-        i--;
 
-    } while(flag);
+        if(i != j){
+            this->data[j] = aux;
+        }
+    }
 }
 
 
