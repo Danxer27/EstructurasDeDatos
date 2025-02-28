@@ -27,4 +27,4 @@ class Interface {
   void insertNewSong(const Song&);
 };
 
-#endif  //__Interface_HPP__
+#endif  //__INTERFACE_HPP__

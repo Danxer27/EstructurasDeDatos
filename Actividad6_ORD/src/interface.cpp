@@ -12,13 +12,14 @@ Interface::Interface(const Interface& m) : songs(m.songs) {}
 void Interface::Menu() {
   int option(0);
 
-  while (option != 6) {
+  while (option != 7) {
     cout << "1. Agregar cancion." << endl;
     cout << "2. Mostrar Lista de Canciones." << endl;
     cout << "3. Buscar cancion." << endl;
-    cout << "4. Eliminar cancion de la lista." << endl;
-    cout << "5. Vaciar Lista." << endl;
-    cout << "6. Salir" << endl;
+    cout << "4. Ordenar Lista. " << endl;
+    cout << "5. Eliminar cancion de la lista." << endl;
+    cout << "6. Vaciar Lista." << endl;
+    cout << "7. Salir" << endl;
     cout << "Opcion: ";
     cin >> option;
     cout << endl;
@@ -34,12 +35,15 @@ void Interface::Menu() {
         this->findSong();
         break;
       case 4:
-        this->deleteSong();
+        this->sortList();
         break;
       case 5:
-        this->songs.deleteAll();
+        this->deleteSong();
         break;
       case 6:
+        this->songs.deleteAll();
+        break;
+      case 7:
         cout << "Saliendo..." << endl;
         break;
       default:
@@ -141,7 +145,7 @@ void Interface::sortList(){
     this->sortList();
     break;
   }
-
+  this->isSorted = true;
   this->showList();
   
 }
@@ -153,6 +157,11 @@ void Interface::findSong() {
   int findMethod, findOption;
   char doSort;
   
+  if(this->songs.isEmpty()){
+    cout << "Aun no hay canciones para buscar. "<<endl;
+    this->Menu();
+  }
+
   cout << "Buscar por nombre o por interprete(1/2): ";
   cin >> findOption;
   
@@ -210,6 +219,12 @@ void Interface::showList() {
 
 
 void Interface::deleteSong() {
+
+  if(this->songs.isEmpty()){
+    cout << "Aun no hay canciones para buscar. "<<endl;
+    this->Menu();
+  }
+
   cout << "Ingresa la posicion de la cancion de quieres eliminar: ";
   cin >> pos;
   

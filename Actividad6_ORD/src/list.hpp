@@ -8,7 +8,7 @@
 template <class T, int ARRAYSIZE = 2048>
 class List {
  private:
-  T data[500];
+  T data[ARRAYSIZE];
   int last;
 
   bool isValid(const int&) const;
@@ -286,8 +286,32 @@ void List<T,ARRAYSIZE>::sortDataBubbleEx(int cmp(const T&, const T&)){
 }
 
 
+
+
 template <class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataInsert(){
+  int i(1), j;
+  T aux;
+  
+  while(i <= this->last){
+    aux = this->data[i];
+    
+    j = i;
+    
+    while(j > 0 && aux > this->data[j - 1]){
+      this->data[j] = this->data[j - 1];
+      
+      j--;
+    }
+    
+    if(i != j){
+      this->data[j] = aux;
+    }
+  }
+}
+
+template <class T, int ARRAYSIZE>
+void List<T,ARRAYSIZE>::sortDataInsertEx(int cmp(const T&, const T&)){
     int i(1), j;
     T aux;
 
@@ -296,41 +320,17 @@ void List<T,ARRAYSIZE>::sortDataInsert(){
 
         j = i;
 
-        //while(j > 0 && aux > this->data[j - 1]{
         while(j > 0 && cmp(aux, this->data[j - 1]) > 0){
             this->data[j] = this->data[j - 1];
-
             j--;
         }
 
         if(i != j){
             this->data[j] = aux;
         }
+        i++;
     }
 }
-
-template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataInsert(){
-    int i(1), j;
-    T aux;
-
-    while(i <= this->last){
-        aux = this->data[i];
-
-        j = i;
-
-        while(j > 0 && aux > this->data[j - 1]){
-            this->data[j] = this->data[j - 1];
-
-            j--;
-        }
-
-        if(i != j){
-            this->data[j] = aux;
-        }
-    }
-}
-
 
 
 //Ultimo agregados SORTS: REMOVER COMENTARIO ANTES DE ENVIAR-
@@ -349,14 +349,14 @@ void List<T,ARRAYSIZE>::sortDataSelect(){
       j++;
     }
     if(m != 1){
-      this->swapData(this->data[i]. this->data[m]);
+      this->swapData(this->data[i], this->data[m]);
     }
     i++;
   }
 }
 
 template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataSelectEx(int cpm(const T& a, const T& b)){
+void List<T,ARRAYSIZE>::sortDataSelectEx(int cmp(const T&, const T&)){
   int i(0), j, m;
 
   while(i < this->last){
@@ -392,16 +392,14 @@ void List<T,ARRAYSIZE>::sortDataShellFactor(){
 
         j-= dif;
       }
-
       i++;
     }
     dif *= fact;
   }
 }
 
-//Explicitos
 template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T& a, const T& b)){
+void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T&, const T&)){
   float fact(1.0/2.0);
   int dif((this->last + 1) * fact), i, j;
 
@@ -410,10 +408,10 @@ void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T& a, const T& b)){
     while(i <= this->last){
       j = i;
 
-      while(j >= dif && cpm(this->data[j - dif], this->data[j]) > 0){
+      while(j >= dif && cmp(this->data[j - dif], this->data[j]) > 0){
         this->swapData(this->data[j-dif], this->data[j]);
 
-        j-= dif;
+        j = j - dif;
       }
 
       i++;
@@ -424,19 +422,19 @@ void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T& a, const T& b)){
 
 template<class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataShellCiuraEx(int cmp(const T&, const T&)){
-int series = {510774, 227011, 100894, 44842, 19930, 8858, 3937, 1750, 701, 301, 132, 57,23, 10, 4, 1}
-int seq(0), dif(serie[seq]), i, j;
+  int series[] = {510774, 227011, 100894, 44842, 19930, 8858, 3937, 1750, 701, 301, 132, 57,23, 10, 4, 1};
+  int seq(0), dif(series[seq]), i, j;
 
-while(dif > 0){
-    i = dif;
-    while(i <= this->last){
+  while(dif > 0){
+      i = dif;
+      while(i <= this->last){
 
-        while(j >= dif and cmp(this->data[j - dif], this->data[j])>0){
-            this->swapData(this->data[j - dif], this->data[j]);
-            j -= dif;
-        }
-        i++;
-    }
-    dif = series[++seq];
-}
+          while(j >= dif and cmp(this->data[j - dif], this->data[j])>0){
+              this->swapData(this->data[j - dif], this->data[j]);
+              j -= dif;
+          }
+          i++;
+      }
+      dif = series[++seq];
+  }
 }

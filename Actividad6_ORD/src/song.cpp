@@ -1,5 +1,7 @@
 // Archivo de Implenentacion de la clase Song
 #include "song.hpp"
+#include <iomanip>
+#include <sstream>
 using namespace std;
 
 Song::Song() {}
@@ -50,9 +52,20 @@ void Song::generateMP3File() {
   this->mp3Name += ".mp3";
 }
 
+/*
 string Song::toString() const {
   return this->song_name + "\t " + this->author + "\t " + this->interpreter +
-         "\t " + this->mp3Name + "\t " + to_string(this->ranking);
+  "\t " + this->mp3Name + "\t " + to_string(this->ranking);
+}
+*/
+string Song::toString() const {
+  stringstream ss;
+  ss << left << setw(20) << this->song_name
+     << left << setw(20) << this->author
+     << left << setw(20) << this->interpreter
+     << left << setw(30) << this->mp3Name
+     << left << setw(10) << to_string(this->ranking);
+  return ss.str();
 }
 
 string Song::getSongName() const {
@@ -107,27 +120,27 @@ bool Song::operator>=(const Song& s) const {
 //Comparadores
 
 int Song::compareTo(const Song& s) {
-  return this->song_name == s.song_name;
+  return this->song_name.compare(s.song_name);
 }
 
 int Song::compareByName(const Song& a, const Song& b) {
-  return a.song_name == b.song_name;
+  return a.song_name.compare(b.song_name);
 }
 
 int Song::compareByAuthor(const Song& a, const Song& b) {
-  return a.author == b.author;
-}
-
-int Song::compareByranking(const Song& a, const Song& b) {
-  return a.ranking == b.ranking;
+  return a.author.compare(b.author);
 }
 
 int Song::compareByInterpreter(const Song& a, const Song& b) {
-  return a.interpreter == b.interpreter;
+  return a.interpreter.compare(b.interpreter);
+}
+
+int Song::compareByranking(const Song& a, const Song& b) {
+  return abs(a.ranking - b.ranking);
 }
 
 int Song::compareByMP3File(const Song& a, const Song& b) {
-  return a.mp3Name == b.mp3Name;
+  return a.mp3Name.compare(b.mp3Name);
 }
 
 void Song::setState(const int& n) {

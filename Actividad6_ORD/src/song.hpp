@@ -37,7 +37,7 @@ class Song {
   bool operator<(const Song&) const;
   bool operator<=(const Song&) const;
 
-  static int compareTo(const Song&);
+  int compareTo(const Song&);
   static int compareByName(const Song&, const Song&);
   static int compareByAuthor(const Song&, const Song&);
   static int compareByInterpreter(const Song&, const Song&);

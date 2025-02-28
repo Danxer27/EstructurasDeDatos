@@ -1,6 +1,6 @@
 //Archivo Main
-#include "menu.hpp"
+#include "interface.hpp"
 int main() {
-  Menu UserInterface;
+  Interface();
   return 0;
 }
