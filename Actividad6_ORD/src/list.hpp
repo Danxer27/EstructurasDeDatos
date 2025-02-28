@@ -406,12 +406,12 @@ void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T&, const T&)){
   while(dif > 0){
     i = dif;
     while(i <= this->last){
-      j = i;
+      j = i; 
 
-      while(j >= dif && cmp(this->data[j - dif], this->data[j]) > 0){
-        this->swapData(this->data[j-dif], this->data[j]);
+      while(j >= dif && cmp(this->data[j], this->data[j - dif]) > 0){
+        this->swapData(this->data[j], this->data[j - dif]);
 
-        j = j - dif;
+        j -= dif;
       }
 
       i++;
@@ -428,8 +428,8 @@ void List<T,ARRAYSIZE>::sortDataShellCiuraEx(int cmp(const T&, const T&)){
   while(dif > 0){
       i = dif;
       while(i <= this->last){
-
-          while(j >= dif and cmp(this->data[j - dif], this->data[j])>0){
+          j = i;
+          while(j >= dif && cmp(this->data[j - dif], this->data[j]) > 0){
               this->swapData(this->data[j - dif], this->data[j]);
               j -= dif;
           }
