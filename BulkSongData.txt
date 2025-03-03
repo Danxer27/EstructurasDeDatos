@@ -1,0 +1,240 @@
+Bohemian Rhapsody
+Freddie Mercury
+Queen  
+1  
+n
+s  
+Smells Like Teen Spirit
+Kurt Cobain
+Nirvana
+2  
+n
+s  
+Stairway to Heaven
+Jimmy Page
+Led Zeppelin
+3  
+n 
+s  
+Hotel California
+Don Henley
+Eagles
+4
+n
+s
+Sweet Child O' Mine
+Axl Rose
+Guns N' Roses
+5
+n
+s
+Billie Jean
+Michael Jackson
+Michael Jackson
+6
+n
+s
+Like a Rolling Stone
+Bob Dylan
+Bob Dylan
+7
+n
+s
+Hey Jude
+Paul McCartney
+The Beatles
+8
+n
+s
+Losing My Religion
+Michael Stipe
+R.E.M.
+9
+n
+s
+November Rain
+Axl Rose
+Guns N' Roses
+10
+n
+s
+Imagine
+John Lennon
+John Lennon
+11
+n
+s
+Thunderstruck
+Angus Young
+AC/DC
+12
+n
+s
+Paint It Black
+Mick Jagger
+The Rolling Stones
+13
+n
+s
+One
+Bono
+U2
+14
+n
+s
+Under Pressure
+Freddie Mercury & David Bowie
+Queen & David Bowie
+15
+n
+s
+Comfortably Numb
+Roger Waters
+Pink Floyd
+16
+n
+s
+Superstition
+Stevie Wonder
+Stevie Wonder
+17
+n
+s
+Back in Black
+Brian Johnson
+AC/DC
+18
+n
+s
+Bohemian Like You
+Courtney Taylor-Taylor
+The Dandy Warhols
+19
+n
+s
+Born to Run
+Bruce Springsteen
+Bruce Springsteen
+20
+n
+s
+Wonderwall
+Noel Gallagher
+Oasis
+21
+n
+s
+Creep
+Thom Yorke
+Radiohead
+22
+n
+s
+Enter Sandman
+James Hetfield
+Metallica
+23
+n
+s
+Paranoid
+Ozzy Osbourne
+Black Sabbath
+24
+n
+s
+Somebody to Love
+Freddie Mercury
+Queen
+25
+n
+s
+I Want to Break Free
+John Deacon
+Queen
+26
+n
+s
+Personal Jesus
+Martin Gore
+Depeche Mode
+27
+n
+s
+Rebel Rebel
+David Bowie
+David Bowie
+28
+n
+s
+Light My Fire
+Jim Morrison
+The Doors
+29
+n
+s
+Highway to Hell
+Bon Scott
+AC/DC
+30
+n
+s
+Every Breath You Take
+Sting
+The Police
+31
+n
+s
+Nothing Else Matters
+James Hetfield
+Metallica
+32
+n
+s
+Hurt
+Trent Reznor
+Nine Inch Nails
+33
+n
+s
+No Woman, No Cry
+Bob Marley
+Bob Marley & The Wailers
+34
+n
+s
+Radioactive
+Dan Reynolds
+Imagine Dragons
+35
+n
+s
+Take on Me
+Magne Furuholmen
+A-ha
+36
+n
+s
+Basket Case
+Billie Joe Armstrong
+Green Day
+37
+n
+s
+Yesterday
+Paul McCartney
+The Beatles
+38
+n
+s
+Livin' on a Prayer
+Jon Bon Jovi
+Bon Jovi
+39
+n
+s
+Seven Nation Army
+Jack White
+The White Stripes
+40
+n
+n
