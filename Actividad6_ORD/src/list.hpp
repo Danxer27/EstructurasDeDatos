@@ -56,15 +56,15 @@ class List {
 
   //Sort Methods
   void sortDataBubble();
-  void sortDataBubbleEx(int(const T&, const T&));
+  void sortDataBubble(int(const T&, const T&));
   void sortDataInsert();
-  void sortDataInsertEx(int(const T&, const T&));
+  void sortDataInsert(int(const T&, const T&));
   void sortDataSelect();
-  void sortDataSelectEx(int(const T&, const T&));
+  void sortDataSelect(int(const T&, const T&));
   void sortDataShellCiura();
-  void sortDataShellCiuraEx(int(const T&, const T&));
+  void sortDataShellCiura(int(const T&, const T&));
   void sortDataShellFactor();
-  void sortDataShellFactorEx(int(const T&, const T&));
+  void sortDataShellFactor(int(const T&, const T&));
 
   void swapData(T&, T&);
 
@@ -235,12 +235,11 @@ List<T,ARRAYSIZE> List<T,ARRAYSIZE>::operator=(const List<T,ARRAYSIZE>& l) {
 
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//#####METODOS DE SORTING ######
-//REVISAR LA PRIMERA PARTE 
+//////////////////////////////////////////////////////////////////
+//#####METODOS DE SORTING ###### 
 template <class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::swapData(T& a, T& b){
-    T aux(a);
+    T aux(b);
     b = a;
     a = aux;
 } 
@@ -266,7 +265,7 @@ void List<T,ARRAYSIZE>::sortDataBubble(){
 }
 
 template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataBubbleEx(int cmp(const T&, const T&)){
+void List<T,ARRAYSIZE>::sortDataBubble(int cmp(const T&, const T&)){
     int i(this->last), j;
     bool flag;
 
@@ -311,7 +310,7 @@ void List<T,ARRAYSIZE>::sortDataInsert(){
 }
 
 template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataInsertEx(int cmp(const T&, const T&)){
+void List<T,ARRAYSIZE>::sortDataInsert(int cmp(const T&, const T&)){
     int i(1), j;
     T aux;
 
@@ -320,7 +319,7 @@ void List<T,ARRAYSIZE>::sortDataInsertEx(int cmp(const T&, const T&)){
 
         j = i;
 
-        while(j > 0 && cmp(aux, this->data[j - 1]) > 0){
+        while(j > 0 && cmp(aux, this->data[j - 1]) < 0){
             this->data[j] = this->data[j - 1];
             j--;
         }
@@ -332,8 +331,6 @@ void List<T,ARRAYSIZE>::sortDataInsertEx(int cmp(const T&, const T&)){
     }
 }
 
-
-//Ultimo agregados SORTS: REMOVER COMENTARIO ANTES DE ENVIAR-
 template<class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataSelect(){
   int i(0), j, m;
@@ -348,7 +345,7 @@ void List<T,ARRAYSIZE>::sortDataSelect(){
       }
       j++;
     }
-    if(m != 1){
+    if(m != i){
       this->swapData(this->data[i], this->data[m]);
     }
     i++;
@@ -356,7 +353,7 @@ void List<T,ARRAYSIZE>::sortDataSelect(){
 }
 
 template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataSelectEx(int cmp(const T&, const T&)){
+void List<T,ARRAYSIZE>::sortDataSelect(int cmp(const T&, const T&)){
   int i(0), j, m;
 
   while(i < this->last){
@@ -364,7 +361,7 @@ void List<T,ARRAYSIZE>::sortDataSelectEx(int cmp(const T&, const T&)){
     j = i + 1;
 
     while(j <= this->last){
-      if(cmp(this->data[j], this->data[m]) > 0){
+      if(cmp(this->data[j], this->data[m]) < 0){
         m = j;
       }
       j++;
@@ -399,7 +396,7 @@ void List<T,ARRAYSIZE>::sortDataShellFactor(){
 }
 
 template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T&, const T&)){
+void List<T,ARRAYSIZE>::sortDataShellFactor(int cmp(const T&, const T&)){
   float fact(1.0/2.0);
   int dif((this->last + 1) * fact), i, j;
 
@@ -408,7 +405,7 @@ void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T&, const T&)){
     while(i <= this->last){
       j = i; 
 
-      while(j >= dif && cmp(this->data[j], this->data[j - dif]) > 0){
+      while(j >= dif && cmp(this->data[j], this->data[j - dif]) < 0){
         this->swapData(this->data[j], this->data[j - dif]);
 
         j -= dif;
@@ -421,7 +418,7 @@ void List<T,ARRAYSIZE>::sortDataShellFactorEx(int cmp(const T&, const T&)){
 }
 
 template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataShellCiuraEx(int cmp(const T&, const T&)){
+void List<T,ARRAYSIZE>::sortDataShellCiura(int cmp(const T&, const T&)){
   int series[] = {510774, 227011, 100894, 44842, 19930, 8858, 3937, 1750, 701, 301, 132, 57,23, 10, 4, 1};
   int seq(0), dif(series[seq]), i, j;
 

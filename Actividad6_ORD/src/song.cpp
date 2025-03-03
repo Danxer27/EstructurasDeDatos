@@ -52,12 +52,6 @@ void Song::generateMP3File() {
   this->mp3Name += ".mp3";
 }
 
-/*
-string Song::toString() const {
-  return this->song_name + "\t " + this->author + "\t " + this->interpreter +
-  "\t " + this->mp3Name + "\t " + to_string(this->ranking);
-}
-*/
 string Song::toString() const {
   stringstream ss;
   ss << left << setw(20) << this->song_name
@@ -84,7 +78,6 @@ int Song::getRanking() const {
   return this->ranking;
 }
 
-// Relacion de equidad
 bool Song::operator==(const Song& s) const {
   if (state == 2) {
     return this->interpreter == s.interpreter;

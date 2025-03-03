@@ -114,7 +114,7 @@ void Interface::insertNewSong(const Song& s) {
   }
 }
 
-
+  //Menu para ordenar Lista
 void Interface::sortList(){
   short int sortMethod, sortOption;
   
@@ -126,19 +126,19 @@ void Interface::sortList(){
   
   switch (sortMethod) {
     case 1: //Bubble Sort
-    sortOption ==  1 ? this->songs.sortDataBubbleEx(Song::compareByName) : this->songs.sortDataBubbleEx(Song::compareByInterpreter);
+    sortOption ==  1 ? this->songs.sortDataBubble(Song::compareByName) : this->songs.sortDataBubble(Song::compareByInterpreter);
     break;
     case 2: //Insertion Sort
-    sortOption ==  1 ? this->songs.sortDataInsertEx(Song::compareByName) : this->songs.sortDataInsertEx(Song::compareByInterpreter);
+    sortOption ==  1 ? this->songs.sortDataInsert(Song::compareByName) : this->songs.sortDataInsert(Song::compareByInterpreter);
     break;
     case 3: //Selec Sort
-    sortOption ==  1 ? this->songs.sortDataSelectEx(Song::compareByName) : this->songs.sortDataSelectEx(Song::compareByInterpreter);
+    sortOption ==  1 ? this->songs.sortDataSelect(Song::compareByName) : this->songs.sortDataSelect(Song::compareByInterpreter);
     break;
     case 4: //Shell sort by factor
-    sortOption ==  1 ? this->songs.sortDataShellFactorEx(Song::compareByName) : this->songs.sortDataShellFactorEx(Song::compareByInterpreter);
+    sortOption ==  1 ? this->songs.sortDataShellFactor(Song::compareByName) : this->songs.sortDataShellFactor(Song::compareByInterpreter);
     break;
     case 5: //Shell sort by Ciura
-    sortOption ==  1 ? this->songs.sortDataShellCiuraEx(Song::compareByName) : this->songs.sortDataShellCiuraEx(Song::compareByInterpreter);
+    sortOption ==  1 ? this->songs.sortDataShellCiura(Song::compareByName) : this->songs.sortDataShellCiura(Song::compareByInterpreter);
     break;;
     default:
     cout << "Opcion invalida."<<endl;
@@ -151,7 +151,7 @@ void Interface::sortList(){
 }
 
 
-
+  //Menu para buscar una cancion.
 void Interface::findSong() {
   string sName;
   int findMethod, findOption;
