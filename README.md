@@ -1,3 +1,5 @@
 # EstructurasDeDatos
-Actividades de materia de Estructuras de Datos 25A
+This is a portfolio from Data Structure class Activities, Notes and Homework
 
+The file __BulkSongData.txt__ contains data to inject to activities that are
+base on a list of song (Activities 3,5 and 6).
