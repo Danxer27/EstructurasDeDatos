@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-template <class T, int ARRAYSIZE>
+template <class T, int ARRAYSIZE = 10000>
 class List {
  private:
   T data[ARRAYSIZE];
@@ -76,7 +76,7 @@ class List {
   void sortDataMerge(int(const T&, const T&));
   void sortDataQuick();
   void sortDataQuick(int(const T&, const T&));
-
+  bool isSorted();
 
   List<T,ARRAYSIZE> operator=(const List<T,ARRAYSIZE>&);
  
@@ -316,6 +316,7 @@ void List<T,ARRAYSIZE>::sortDataInsert(){
     if(i != j){
       this->data[j] = aux;
     }
+    i++;
   }
 }
 
@@ -450,7 +451,7 @@ void List<T,ARRAYSIZE>::sortDataShellCiura(int cmp(const T&, const T&)){
 
 template<class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataMerge(){
-    this->sortDatamMerge(0, this-last);
+    this->sortDataMerge(0, this->last);
 }
 
 
@@ -482,7 +483,7 @@ void List<T,ARRAYSIZE>::sortDataMerge(const int& leftEdge, const int& rightEdge)
     }
     if(i <= m){
       while(j <= rightEdge && temp[j] <= temp[i]){
-        this->data[x++] + temp[j++];
+        this->data[x++] = temp[j++];
       }
     }
   }
@@ -565,7 +566,7 @@ void List<T,ARRAYSIZE>::sortDataQuick(const int& leftEdge, const int& rightEdge)
     }
 
     if(i != j){
-      swapData(this->data[j], this->data[j]);
+      swapData(this->data[i], this->data[j]);
     }
   }
 
@@ -578,4 +579,52 @@ void List<T,ARRAYSIZE>::sortDataQuick(const int& leftEdge, const int& rightEdge)
   this->sortDataQuick(leftEdge, i-1);
   this->sortDataQuick(i+1, rightEdge);
 
+}
+
+
+template<class T, int ARRAYSIZE>
+void List<T,ARRAYSIZE>::sortDataQuick(const int& leftEdge, const int& rightEdge, int cmp(const T&, const T&)){
+  if(leftEdge >= rightEdge){
+    return;
+  }
+
+  int i(leftEdge), j(rightEdge);
+
+  while(i<j){
+
+    while(i<j && cmp(this->data[i], this->data[rightEdge]) > 0){
+      i++;
+    }
+
+    while(i <  j && cmp(this->data[j] >= this->data[rightEdge]) > 0){
+      j--;
+    }
+
+    if(i != j){
+      swapData(this->data[i], this->data[j]);
+    }
+  }
+
+  if(i != rightEdge){
+    this->swapData(this->data[i], this->data[rightEdge]);
+  }
+
+  //Divide and conquer;
+
+  this->sortDataQuick(leftEdge, i-1);
+  this->sortDataQuick(i+1, rightEdge);
+
+}
+
+template<class T, int ARRAYSIZE>
+bool List<T,ARRAYSIZE>::isSorted(){
+    int i(0);
+
+    while(i < this->last){
+      if(this->data[i] > this->data[i+1]){
+        return false;
+      }
+      i++;
+    }
+    return true;
 }

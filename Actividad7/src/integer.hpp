@@ -37,6 +37,9 @@ class Integer{
         Integer& operator*=(const Integer&);
         Integer& operator/=(const Integer&);
 
+        int compareTo();
+        static int compareValue(const Integer&, const Integer&);
+
 };
 
 

@@ -6,11 +6,9 @@
 
 class Interface {
     private:
-        List<Integer, 1000000> integers;
+        List<Integer>* listRef;
     public:
-        Interface();
-        Interface(const Interface&);
-        void Menu();
+        Interface(List<Integer>&);
 
 };
 

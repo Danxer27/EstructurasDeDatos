@@ -120,3 +120,7 @@ Integer& Integer::operator*=(const Integer&)
 
 */
 
+
+int compareValue(const Integer& a, const Integer& b){
+    return a.getValue()  - b.getValue();
+}
