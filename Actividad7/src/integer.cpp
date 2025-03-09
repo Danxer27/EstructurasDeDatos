@@ -1,8 +1,7 @@
-//Archivo de implementacion de la clase Integer
+// Archivo de implementacion de la clase Integer
 #include "integer.hpp"
 
 using namespace std;
-
 
 Integer::Integer() : intdata(0) {}
 
@@ -10,117 +9,112 @@ Integer::Integer(const Integer& e) : intdata(e.intdata) {}
 
 Integer::Integer(const int64_t& e) : intdata(e) {}
 
-__int64 Integer::getValue() const{
-    return intdata;
+__int64 Integer::getValue() const {
+  return intdata;
 }
 
-void Integer::setValue(const __int64& i){
-    this->intdata = i;
+void Integer::setValue(const __int64& i) {
+  this->intdata = i;
 }
 
-std::string Integer::toString(){
-    return std::to_string(intdata);
+std::string Integer::toString() const {
+  return std::to_string(intdata);
 }
 
-Integer& Integer::operator=(const Integer& e){
-    this->intdata = e.intdata;
+Integer& Integer::operator=(const Integer& e) {
+  this->intdata = e.intdata;
 
-    return *this;
+  return *this;
 }
 
-bool Integer::operator == (const Integer& e){
-    return this->intdata == e.intdata;
+bool Integer::operator==(const Integer& e) const {
+  return this->intdata == e.intdata;
 }
 
-bool Integer::operator != (const Integer& e){
-    return !(*this == e);
+bool Integer::operator!=(const Integer& e) const {
+  return !(*this == e);
 }
 
-bool Integer::operator > (const Integer& e) {
-    return this->intdata > e.intdata;
+bool Integer::operator>(const Integer& e) const {
+  return this->intdata > e.intdata;
 }
 
-bool Integer::operator >= (const Integer& e){
-    return *this > e || *this == e;
+bool Integer::operator>=(const Integer& e) const {
+  return *this > e || *this == e;
 }
 
-bool Integer::operator < (const Integer& e){
-    return !(*this >= e);
+bool Integer::operator<(const Integer& e) const {
+  return !(*this >= e);
 }
 
-bool Integer::operator <= (const Integer& e){
-    return !(*this > e);
+bool Integer::operator<=(const Integer& e) const {
+  return !(*this > e);
 }
 
-
-Integer Integer::operator++(int){
-    return this->intdata++;
+Integer Integer::operator++(int) {
+  return this->intdata++;
 }
 
-Integer& Integer::operator++(){
-    ++intdata;
+Integer& Integer::operator++() {
+  ++intdata;
 
-    return *this;
+  return *this;
 }
 
-/*
-Integer& Integer::operator--()
-{
-    
+Integer& Integer::operator--() {
+  --this->intdata;
+
+  return *this;
 }
 
-Integer Integer::operator--(int)
-{
-    
+Integer Integer::operator--(int) {
+  return this->intdata--;
 }
 
-Integer Integer::operator-() const
-{
-    
+Integer Integer::operator+(const Integer& e) {
+  return this->intdata + e.intdata;
 }
 
-Integer Integer::operator-(const Integer&)
-{
-    
+Integer Integer::operator-(const Integer& e) {
+  return this->intdata - e.intdata;
 }
 
-Integer Integer::operator/(const Integer&)
-{
-    
+Integer Integer::operator*(const Integer& e) {
+  return this->intdata * e.intdata;
 }
 
-Integer& Integer::operator+=(const Integer&)
-{
-    
+Integer Integer::operator/(const Integer& e) {
+  return this->intdata / e.intdata;
 }
 
-Integer Integer::operator*(const Integer&)
-{
-    
+Integer Integer::operator%(const Integer& e) {
+  return this->intdata % e.intdata;
 }
 
-Integer Integer::operator+(const Integer&)
-{
-    
+Integer& Integer::operator+=(const Integer& e) {
+  this->intdata += e.intdata;
+  return *this;
 }
 
-Integer& Integer::operator/=(const Integer&){
-    
+Integer& Integer::operator-=(const Integer& e) {
+  this->intdata -= e.intdata;
+  return *this;
 }
 
-Integer& Integer::operator-=(const Integer&)
-{
-    
+Integer& Integer::operator/=(const Integer& e) {
+  this->intdata /= e.intdata;
+  return *this;
 }
 
-Integer& Integer::operator*=(const Integer&)
-{
-    
+Integer& Integer::operator*=(const Integer& e) {
+  this->intdata *= e.intdata;
+  return *this;
 }
 
-*/
+int Integer::compareTo(const Integer& e) {
+  return this->intdata - e.intdata;
+}
 
-
-int compareValue(const Integer& a, const Integer& b){
-    return a.getValue()  - b.getValue();
+int Integer::compareValue(const Integer& a, const Integer& b) {
+  return a.getValue() - b.getValue();
 }
