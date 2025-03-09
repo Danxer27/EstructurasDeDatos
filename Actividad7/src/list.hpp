@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-template <class T, int ARRAYSIZE = 2048>
+template <class T, int ARRAYSIZE>
 class List {
  private:
   T data[ARRAYSIZE];
@@ -106,7 +106,7 @@ bool List<T,ARRAYSIZE>::isEmpty() const {
 
 template <class T, int ARRAYSIZE>
 bool List<T,ARRAYSIZE>::isFull() const {
-  return this->last == 499;
+  return this->last == ARRAYSIZE;
 }
 
 template <class T, int ARRAYSIZE>
@@ -548,7 +548,7 @@ void List<T,ARRAYSIZE>::sortDataQuick(){
 
 template<class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataQuick(const int& leftEdge, const int& rightEdge){
-  if(leftEdge >= righEdge){
+  if(leftEdge >= rightEdge){
     return;
   }
 
