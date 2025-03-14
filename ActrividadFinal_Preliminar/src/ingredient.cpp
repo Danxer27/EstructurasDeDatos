@@ -26,8 +26,12 @@ float Ingredient::getAmount() const{
     return this->amount;
 }
 
-std::string Ingredient::getMeasurementUnit() const {
+std::string Ingredient::getUnit() const {
     return this->measureUnit;
+}
+
+std::string Ingredient::toString(){
+    return this->getName() + " " + to_string(this->getAmount()) + this->getUnit();
 }
 
 

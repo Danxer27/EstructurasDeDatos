@@ -1,7 +1,7 @@
 #ifndef __INGREDIENT_HPP__
 #define __INGREDIENT_HPP__
 #include <string>
-
+#include "list.hpp"
 
 class Ingredient {
     private:
@@ -18,7 +18,9 @@ class Ingredient {
 
         std::string getName() const;
         float getAmount() const;
-        std::string getMeasurementUnit() const;
+        std::string getUnit() const;
+
+        std::string toString();
 
         Ingredient& operator=(const Ingredient&);
 

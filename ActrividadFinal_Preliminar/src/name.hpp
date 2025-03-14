@@ -33,15 +33,4 @@ class Name {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
 #endif //__NAME_HPP__
