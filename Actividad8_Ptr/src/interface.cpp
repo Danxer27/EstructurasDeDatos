@@ -211,8 +211,7 @@ void Interface::findSong() {
 
 
 void Interface::showList() {
-  system("clear");
-  for (int i = 0; i < 100; i++) std::cout << "\n";
+  system("cls");
   cout << "Lista de Canciones:" << endl;
   stringstream ss;
   ss << left << setw(20) << "Nombre"

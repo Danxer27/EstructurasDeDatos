@@ -241,19 +241,15 @@ int List<T,ARRAYSIZE>::findDataBin(const T& e) const {
 
     if (*(this->data[m]) == e) {
       return m;
-    } else if (*(this->data[m]) > e) {
+    } else if (*this->data[m] > e) {
       d = m - 1;
-    } else if (*(this->data[m]) < e) {
+    } else if (*this->data[m] < e) {
       i = m + 1;
     }
   }
 
   return -1;
 }
-
-
-
-
 
 //////////////////////////////////////////////////////////////////
 //#####METODOS DE SORTING ###### 
@@ -310,14 +306,14 @@ void List<T,ARRAYSIZE>::sortDataBubble(int cmp(const T&, const T&)){
 template <class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataInsert(){
   int i(1), j;
-  T aux;
+  T* aux;
   
   while(i <= this->last){
     aux = this->data[i];
     
     j = i;
     
-    while(j > 0 && aux > this->data[j - 1]){
+    while(j > 0 && *aux > *this->data[j - 1]){
       this->data[j] = this->data[j - 1];
       
       j--;
@@ -332,20 +328,20 @@ void List<T,ARRAYSIZE>::sortDataInsert(){
 template <class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::sortDataInsert(int cmp(const T&, const T&)){
     int i(1), j;
-    T aux;
+    T* aux;
 
     while(i <= this->last){
-        aux = *(this->data[i]);
+        aux = this->data[i];
 
         j = i;
 
-        while(j > 0 && cmp(aux, *(this->data[j - 1])) < 0){
+        while(j > 0 && cmp(*aux, *this->data[j - 1]) < 0){
             this->data[j] = this->data[j - 1];
             j--;
         }
 
         if(i != j){
-            *(this->data[j]) = aux;
+            this->data[j] = aux;
         }
         i++;
     }
@@ -360,7 +356,7 @@ void List<T,ARRAYSIZE>::sortDataSelect(){
     j = i + 1;
 
     while(j <= this->last){
-      if(this->data[j] < this->data[m]){
+      if(*this->data[j] < *this->data[m]){
         m = j;
       }
       j++;
@@ -404,7 +400,7 @@ void List<T,ARRAYSIZE>::sortDataShellFactor(){
     while(i <= this->last){
       j = i;
 
-      while(j >= dif && this->data[j - dif] > this->data[j]){
+      while(j >= dif && *this->data[j - dif] > *this->data[j]){
         this->swapData(this->data[j-dif], this->data[j]);
 
         j-= dif;
@@ -446,7 +442,7 @@ void List<T,ARRAYSIZE>::sortDataShellCiura(){
       i = dif;
       while(i <= this->last){
           j = i;
-          while(j >= dif && this->data[j - dif] > this->data[j]){
+          while(j >= dif && *this->data[j - dif] > *this->data[j]){
               this->swapData(this->data[j - dif], this->data[j]);
               j -= dif;
           }
