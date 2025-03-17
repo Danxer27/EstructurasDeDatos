@@ -43,7 +43,13 @@ class Song {
   static int compareByInterpreter(const Song&, const Song&);
   static int compareByranking(const Song&, const Song&);
   static int compareByMP3File(const Song&, const Song&);
-
+  
+  static int compareByNamePtr(const Song*, const Song*);
+  static int compareByAuthorPtr(const Song*, const Song*);
+  static int compareByInterpreterPtr(const Song*, const Song*);
+  static int compareByrankingPtr(const Song*, const Song*);
+  static int compareByMP3FilePtr(const Song*, const Song*);
+  
   static void setState(const int&);
 };
 

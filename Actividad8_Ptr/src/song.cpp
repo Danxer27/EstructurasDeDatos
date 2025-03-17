@@ -136,6 +136,26 @@ int Song::compareByMP3File(const Song& a, const Song& b) {
   return a.mp3Name.compare(b.mp3Name);
 }
 
+int Song::compareByNamePtr(const Song* a, const Song* b) {
+  return a->song_name.compare(b->song_name);
+}
+
+int Song::compareByAuthorPtr(const Song* a, const Song* b) {
+  return a->author.compare(b->author);
+}
+
+int Song::compareByInterpreterPtr(const Song* a, const Song* b) {
+  return a->interpreter.compare(b->interpreter);
+}
+
+int Song::compareByrankingPtr(const Song* a, const Song* b) {
+  return abs(a->ranking - b->ranking);
+}
+
+int Song::compareByMP3FilePtr(const Song* a, const Song* b) {
+  return a->mp3Name.compare(b->mp3Name);
+}
+
 void Song::setState(const int& n) {
   state = n;
 }

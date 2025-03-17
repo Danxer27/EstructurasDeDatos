@@ -1,21 +1,21 @@
 Bohemian Rhapsody
 Freddie Mercury
-Queen  
-1  
+Queen
+1
 n
-s  
+s
 Smells Like Teen Spirit
 Kurt Cobain
 Nirvana
-2  
+2
 n
-s  
+s
 Stairway to Heaven
 Jimmy Page
 Led Zeppelin
-3  
-n 
-s  
+3
+n
+s
 Hotel California
 Don Henley
 Eagles

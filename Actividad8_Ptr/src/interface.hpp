@@ -2,19 +2,18 @@
 #ifndef __INTERFACE_HPP__
 #define __INTERFACE_HPP__
 #include <iostream>
-#include "list.hpp"
+#include "listTD.hpp"
 #include "song.hpp"
 
 class Interface {
  private:
-  List<Song> songs;
+  List<Song,5000>* songs;
   Song temp_song;
   int pos;
   bool isSorted;
 
  public:
-  Interface();
-  Interface(const Interface&);
+  Interface(List<Song,5000>&);
 
   void Menu();
   void showList();

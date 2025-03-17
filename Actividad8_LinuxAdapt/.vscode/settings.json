@@ -1,0 +1,6 @@
+{
+    "terminal.external.linuxExec": "xterm",
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}

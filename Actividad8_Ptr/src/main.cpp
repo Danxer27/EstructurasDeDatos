@@ -1,6 +1,8 @@
 //Archivo Main
 #include "interface.hpp"
+
 int main() {
-  Interface();
+  List<Song, 5000> songList;
+  Interface User(songList);
   return 0;
 }

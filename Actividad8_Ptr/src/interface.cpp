@@ -1,13 +1,15 @@
 // Archivo de Implementacion de la clase Interface
 #include "interface.hpp"
+#include <iomanip>
+#include <sstream>
+#include <cstdlib>
 
 using namespace std;
 
-Interface::Interface() : isSorted(false) {
+Interface::Interface(List<Song,5000>& l) : isSorted(false) {
+  this->songs = &l;
   this->Menu();
 }
-
-Interface::Interface(const Interface& m) : songs(m.songs) {}
 
 void Interface::Menu() {
   int option(0);
@@ -41,7 +43,7 @@ void Interface::Menu() {
         this->deleteSong();
         break;
       case 6:
-        this->songs.deleteAll();
+        songs->deleteAll();
         break;
       case 7:
         cout << "Saliendo..." << endl;
@@ -56,9 +58,7 @@ void Interface::Menu() {
 
 
 void Interface::addSong() {
-  string song_name;
-  string author;
-  string interpreter;
+  string song_name, author, interpreter;
   int ranking;
   
   fflush(stdin);
@@ -86,32 +86,37 @@ void Interface::addSong() {
   char opcion;
   cout << endl << "Quieres agregar otra cancion?(s/n): " << endl;
   cin >> opcion;
+
+  cin.ignore();
   if (opcion == 's') {
     this->addSong();
   }
 }
 
 void Interface::insertNewSong(const Song& s) {
-  char opcion;
-  cout << "Quieres Agregarlo en una posicion especifica?(s/n): ";
-  cin >> opcion;
-  if (opcion == 's') {
-    int pos;
-    cout << "Introduce la posicion: ";
-    cin >> pos;
+  char opcion = 'n';
+  if(!songs->isEmpty()){
+      cout << "Quieres Agregarlo en una posicion especifica?(s/n): ";
+      cin >> opcion;
+      if (opcion == 's') {
+        int pos;
+        cout << "Introduce la posicion: ";
+        cin >> pos;
+        
+        try {
+          songs->insertData(pos - 1, s);
+        } catch (const List<Song>::Exception& e) {
+          cout << e.what() << endl;
+        }
+        return;
+      }
+    }
+      try {
+        songs->insertData(songs->getLastPos(), s);
+      } catch (const List<Song>::Exception& e) {
+        cout << e.what() << endl;
+      }
     
-    try {
-      this->songs.insertData(pos - 1, s);
-    } catch (const List<Song>::Exception& e) {
-      cout << e.what() << endl;
-    }
-  } else {
-    try {
-      this->songs.insertData(this->songs.getLastPos(), s);
-    } catch (const List<Song>::Exception& e) {
-      cout << e.what() << endl;
-    }
-  }
 }
 
   //Menu para ordenar Lista
@@ -126,19 +131,19 @@ void Interface::sortList(){
   
   switch (sortMethod) {
     case 1: //Bubble Sort
-    sortOption ==  1 ? this->songs.sortDataBubble(Song::compareByName) : this->songs.sortDataBubble(Song::compareByInterpreter);
+    sortOption ==  1 ? songs->sortDataBubble(Song::compareByName) : songs->sortDataBubble(Song::compareByInterpreter);
     break;
     case 2: //Insertion Sort
-    sortOption ==  1 ? this->songs.sortDataInsert(Song::compareByName) : this->songs.sortDataInsert(Song::compareByInterpreter);
+    sortOption ==  1 ? songs->sortDataInsert(Song::compareByName) : songs->sortDataInsert(Song::compareByInterpreter);
     break;
     case 3: //Selec Sort
-    sortOption ==  1 ? this->songs.sortDataSelect(Song::compareByName) : this->songs.sortDataSelect(Song::compareByInterpreter);
+    sortOption ==  1 ? songs->sortDataSelect(Song::compareByName) : songs->sortDataSelect(Song::compareByInterpreter);
     break;
     case 4: //Shell sort by factor
-    sortOption ==  1 ? this->songs.sortDataShellFactor(Song::compareByName) : this->songs.sortDataShellFactor(Song::compareByInterpreter);
+    sortOption ==  1 ? songs->sortDataShellFactor(Song::compareByName) : songs->sortDataShellFactor(Song::compareByInterpreter);
     break;
     case 5: //Shell sort by Ciura
-    sortOption ==  1 ? this->songs.sortDataShellCiura(Song::compareByName) : this->songs.sortDataShellCiura(Song::compareByInterpreter);
+    sortOption ==  1 ? songs->sortDataShellCiura(Song::compareByName) : songs->sortDataShellCiura(Song::compareByInterpreter);
     break;;
     default:
     cout << "Opcion invalida."<<endl;
@@ -157,7 +162,7 @@ void Interface::findSong() {
   int findMethod, findOption;
   char doSort;
   
-  if(this->songs.isEmpty()){
+  if(songs->isEmpty()){
     cout << "Aun no hay canciones para buscar. "<<endl;
     this->Menu();
   }
@@ -192,35 +197,42 @@ void Interface::findSong() {
   temp_song.setSong(sName);
   
   if (findMethod == 1) {
-    pos = this->songs.findDataLin(temp_song);
+    pos = songs->findDataLin(temp_song);
   } else {
-    pos = this->songs.findDataBin(temp_song);
+    pos = songs->findDataBin(temp_song);
   }
-  
   if (pos == -1) {
     cout << "\nCancion no encontrada" << endl;
   } else {
     cout << "\nLa cancion en la posicion " << pos
-    << " es: " << this->songs.retrieve(pos).toString() << endl;
+    << " es: " << songs->retrieve(pos).toString() << endl;
   }
 }
 
 
 void Interface::showList() {
-  system("CLS");
+  system("clear");
+  for (int i = 0; i < 100; i++) std::cout << "\n";
   cout << "Lista de Canciones:" << endl;
-  cout << "Nombre \tAutor \tInterprete \tArchivo \tRanking" << endl;
-  if (this->songs.isEmpty()) {
+  stringstream ss;
+  ss << left << setw(20) << "Nombre"
+     << left << setw(20) << "Autor"
+     << left << setw(20) << "Interprete"
+     << left << setw(30) << "Archivo.MP3"
+     << left << setw(10) << "Ranking";
+  cout << ss.str() << endl;
+
+  if (songs->isEmpty()) {
     cout << "Aun no hay canciones en la lista." << endl;
   } else {
-    cout << songs.toString() << endl;
+    cout << songs->toString() << endl;
   }
 }
 
 
 void Interface::deleteSong() {
 
-  if(this->songs.isEmpty()){
+  if(songs->isEmpty()){
     cout << "Aun no hay canciones para buscar. "<<endl;
     this->Menu();
   }
@@ -229,7 +241,7 @@ void Interface::deleteSong() {
   cin >> pos;
   
   try {
-    songs.deleteData(pos);
+    songs->deleteData(pos);
   } catch (const List<Song>::Exception& e) {
     cout << e.what() << endl;
   }
