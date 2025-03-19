@@ -1,0 +1,280 @@
+// Archivo de Definicion e Implementacion de la lista
+#ifndef __LIST_HPP__
+#define __LIST_HPP__
+#include <exception>
+#include <iostream>
+#include <string>
+
+template <class T>
+class List {
+ class Node;
+  public:
+    typedef Node* Position
+
+ private:
+  
+  class Node {
+    private:
+      T* data = nullptr;
+      Position next = nullptr;
+    public: 
+      Node();
+      Node(const T&);
+
+      void setData(const T&);
+      void setNext(Position);
+      T& getData() const;
+      Position getNext() const;
+  };
+
+  int last;
+
+  bool isValid(const int&) const;
+  void addData(const List<T>&);
+  void swapData(T*&, T*&);
+
+ public:
+  Position anchor = nullptr;
+
+            class Exception : public std::exception {
+            private:
+              std::string msg;
+
+            public:
+              Exception() noexcept : msg("Error indefinido") {}
+              Exception(const Exception& ex) noexcept : msg(ex.msg) {}
+              Exception(const std::string& m) : msg(m) {}
+              Exception& operator=(const Exception& ex) noexcept {
+                this->msg = ex.msg;
+                return *this;
+              }
+              virtual ~Exception() {}
+              virtual const char* what() const noexcept { return this->msg.c_str(); }
+            };
+  List();
+  List(const List<T>&);
+  ~List();
+
+  bool isEmpty() const;
+  bool isFull() const;
+
+  void insertData(const Position&, const T&);
+  void deleteData(const int&);
+
+  int getFirstPos() const;
+  int getLastPos() const;
+
+  int getPreviousPos(const int&) const;
+  int getNextPos(const int&) const;
+
+  int findDataLin(const T&) const;
+  int findDataBin(const T&) const;
+
+  T& retrieve(const int&);
+
+  std::string toString() const;
+
+  void deleteAll();
+
+  //Sort Methods
+  void sortDataBubble();
+  void sortDataBubble(int(const T&, const T&));
+  void sortDataInsert();
+  void sortDataInsert(int(const T&, const T&));
+  void sortDataSelect();
+  void sortDataSelect(int(const T&, const T&));
+  void sortDataShellCiura();
+  void sortDataShellCiura(int(const T&, const T&));
+  void sortDataShellFactor();
+  void sortDataShellFactor(int(const T&, const T&));
+
+  List<T> operator=(const List<T>&);
+ 
+};
+
+
+#endif  // __LIST_HPP__
+
+
+//Implementacion de los Nodos:
+
+template<class T>
+List<T>::Node::Node() : data(nullptr) {}
+
+template<class T>
+List<T>::Node::Node(const T& value) : data(e) {}
+
+template<class T>
+void List<T>::setData(const T& e){
+  this->data = e;
+}
+
+template<class T>
+void List<T>setNext(const Position& p){
+  this->next = p;
+}
+
+template<class T>
+typename List<T>::Position List<T>::Node::getNext() const {
+    return next;
+}
+
+template<class T>
+T& List<T>::Node::getData(){
+  return this->data;
+}
+
+
+// Implementacion de la lista:
+
+
+template<class T>
+List<T>::List() : anchor(nullptr) {}
+
+template<class T>
+List<T>::List(const List&) {
+  this->addData();
+}
+
+template<class T>
+bool List<T>::isEmpty(){
+  return this->anchor == nullptr;
+}
+
+template<class T>
+void List<T>::insertData(const Position& p,const T& e){
+  if(p != nullptr && !this->isValid(p)){
+    throw Exception("Posicion Invalida. List<T>::insertData()");
+  }
+
+  Position newNode(new Node(e));
+
+  if(p == nullptr){ //Begining Insert
+    this->anchor = newNode;
+  }else {
+    newNode->setNext(p->getNext());
+    p->setNext(newNode);
+  }
+}
+
+template<class T>
+void List<T>::deleteData(const Position& p){
+  if(!this->isValid(p)){
+    throw Exception("Posicion Invalida. List::deleteData()");
+  }
+  
+  if(p == this->anchor);
+    this->anchor = p->getNext();
+  else {
+    this->getPreiousPos(p)->setNext(p->getNext());
+  }
+
+  delete p;
+}
+
+template<class T>
+typename List<T>::Position List<T>::getFirstPost(){
+  return this->anchor
+}
+
+template<class T>
+typename List<T>::Position List<T>::getLastPost(){
+  if(this->isEmpty()){
+    return nullptr;
+  }
+
+  Position aux(this->aux);
+
+  while(aux->getNext() != nullptr){
+    aux = aux->getNext();
+  }
+
+  return aux;
+}
+
+template<class T>
+typename List<T>::Position List<T>::getPreviousPos() const {
+  Position aux(this->anchor);
+
+  while(aux != nullptr && aux->getNext() != p){
+    aux = aux->getNext();
+  }
+
+  return aux;
+}
+
+template<class T>
+typename List<T>::Position List<T>::getNextPos(const Position& p) const {
+  if(!this->isValid(p)){
+    return nullptr;
+  }
+
+  return p->getNext();
+}
+
+template<class T>
+typename List<T>::Position List<T>::findData(const T& e) const{
+  Position aux(this->anchor);
+
+  while(aux != nullptr && aux->getNext() != p){
+    aux = aux->getNext();
+  }
+
+  return aux;
+}
+
+template<class T>
+T& List<T>::retrieve(const Position& p){
+  if(!this->isValid(p)){
+    throw Exception("Position invalida. List::retrieve()")
+  }
+
+  return p->getData();
+}
+
+template<class T>
+string List<T>::toString(){
+  string result;
+
+  Position aux(this->anchor);
+
+  while(aux != nullptr){
+    result += aux->getData().toString() + "\n";
+    aux = aux->getNext();
+  }
+}
+
+template<class T>
+bool List<T>::isValid(const Position& p) const {
+  Position aux(this->anchor);
+
+  while(aux != nullptr){
+    if(aux == p){
+      return true;
+    }
+    aux = aux->getNext();
+  }
+
+  return false;
+}
+
+template<class T>
+void List<T>::addData(const List<T>& l){
+  Position aux(l->anchor), newNode, lastInserted(this->getLastPost());
+
+  while(aux != nullptr){
+    if(newNode = new Node(aux->getData()) == nullptr){
+      throw Exception("No memory Available. Unable to add more data -> List::copyAll()");
+    }
+    if(lastInserted == nullptr){
+      this->anchor = newNode;
+    }else{
+      lastInserted->setNext(newNode);
+    }
+
+    lastInserted = newNode;
+
+    aux = aux->getNext();
+
+  }
+}
