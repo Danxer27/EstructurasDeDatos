@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Interface::Interface(List<Song,5000>& l) : isSorted(false) {
+Interface::Interface(List<Song>& l) : isSorted(false) {
   this->songs = &l;
   this->Menu();
 }
@@ -58,6 +58,7 @@ void Interface::Menu() {
 
 
 void Interface::addSong() {
+  Song temp_song;
   string song_name, author, interpreter;
   int ranking;
   
@@ -95,16 +96,21 @@ void Interface::addSong() {
 
 void Interface::insertNewSong(const Song& s) {
   char opcion = 'n';
+  string sName;
+  Song temp_song;
+  
   if(!songs->isEmpty()){
       cout << "Quieres Agregarlo en una posicion especifica?(s/n): ";
       cin >> opcion;
       if (opcion == 's') {
-        int pos;
-        cout << "Introduce la posicion: ";
-        cin >> pos;
+        cout<<"Para insertar en una posicion especifica ingrese el nombre de la cancion contigua a la que quiere insertar la cancion: ";
+        cin.ignore();
+        getline(cin, sName);
+  
+        temp_song.setSong(sName);
         
         try {
-          songs->insertData(pos - 1, s);
+          songs->insertData(songs->getNextPos(songs->findData(temp_song)), s);
         } catch (const List<Song>::Exception& e) {
           cout << e.what() << endl;
         }
@@ -115,12 +121,18 @@ void Interface::insertNewSong(const Song& s) {
         songs->insertData(songs->getLastPos(), s);
       } catch (const List<Song>::Exception& e) {
         cout << e.what() << endl;
-      }
-    
+      }   
 }
+//Menu para ordenar Lista
+void Interface::sortList(){  
 
-  //Menu para ordenar Lista
-void Interface::sortList(){
+  try {
+    songs->sortDataBubble();
+  } catch (const List<Song>::Exception& e) {
+    cout << e.what() << endl;
+  }   
+
+  /*
   short int sortMethod, sortOption;
   
   cout << "Quieres ordenar por Nombre de la cancion o por Nombre del interprete?(1/2):";
@@ -151,16 +163,17 @@ void Interface::sortList(){
     break;
   }
   this->isSorted = true;
-  this->showList();
   
+  */
+  this->showList();
 }
 
 
   //Menu para buscar una cancion.
 void Interface::findSong() {
+  Song temp_song;
   string sName;
-  int findMethod, findOption;
-  char doSort;
+  int findOption;
   
   if(songs->isEmpty()){
     cout << "Aun no hay canciones para buscar. "<<endl;
@@ -169,19 +182,6 @@ void Interface::findSong() {
 
   cout << "Buscar por nombre o por interprete(1/2): ";
   cin >> findOption;
-  
-  cout << "Busqueda Lineal o Binaria?(1/2): ";
-  cin >> findMethod;
-
-  if(findMethod == 2){
-    if(!this->isSorted){
-      cout << "La lista no esta ordenada para trabajar con busqueda binaria, quieres ordenarla o continuar de todas maneras?:(1.Ordenar / 2. Continuar): ";
-      cin >> doSort;
-      if(doSort == 1){
-        this->sortList();
-      }
-    }
-  }
   
   if (findOption == 1) {
     Song::setState(1);  // Busca por nombre
@@ -196,16 +196,12 @@ void Interface::findSong() {
   
   temp_song.setSong(sName);
   
-  if (findMethod == 1) {
-    pos = songs->findDataLin(temp_song);
-  } else {
-    pos = songs->findDataBin(temp_song);
-  }
-  if (pos == -1) {
+  //esta madre funciona por posiciones atribuidas por los mismos metodos internos
+  if(songs->findData(temp_song)->getNext() == nullptr){
     cout << "\nCancion no encontrada" << endl;
   } else {
-    cout << "\nLa cancion en la posicion " << pos
-    << " es: " << songs->retrieve(pos).toString() << endl;
+    cout << "\nLa cancion en la posicion " << songs->getPreviousPos(songs->findData(temp_song))->getNext()
+    << " es: " << songs->retrieve(songs->findData(temp_song)).toString() << endl;
   }
 }
 
@@ -230,17 +226,24 @@ void Interface::showList() {
 
 
 void Interface::deleteSong() {
-
+  Song temp_song;
+  string sName;
   if(songs->isEmpty()){
     cout << "Aun no hay canciones para buscar. "<<endl;
     this->Menu();
   }
 
-  cout << "Ingresa la posicion de la cancion de quieres eliminar: ";
-  cin >> pos;
+  
+  cout << "Ingresa el nombre de la cancion de quieres eliminar: ";
+  cin.ignore();
+  getline(cin, sName);
+  
+  temp_song.setSong(sName);
+
+
   
   try {
-    songs->deleteData(pos);
+    songs->deleteData(songs->findData(temp_song));
   } catch (const List<Song>::Exception& e) {
     cout << e.what() << endl;
   }

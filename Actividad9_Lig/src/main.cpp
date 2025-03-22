@@ -2,7 +2,7 @@
 #include "interface.hpp"
 
 int main() {
-  List<Song, 5000> songList;
+  List<Song> songList;
   Interface User(songList);
   return 0;
 }

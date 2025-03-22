@@ -7,13 +7,12 @@
 
 class Interface {
  private:
-  List<Song,5000>* songs;
-  Song temp_song;
+  List<Song>* songs;
   int pos;
   bool isSorted;
 
  public:
-  Interface(List<Song,5000>&);
+  Interface(List<Song>&);
 
   void Menu();
   void showList();

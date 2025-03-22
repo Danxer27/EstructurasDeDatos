@@ -5,33 +5,32 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
 template <class T>
 class List {
  class Node;
   public:
-    typedef Node* Position
+    typedef Node* Position;
 
  private:
   
   class Node {
     private:
-      T* data = nullptr;
+      T data;
       Position next = nullptr;
     public: 
       Node();
       Node(const T&);
 
       void setData(const T&);
-      void setNext(Position);
-      T& getData() const;
+      void setNext(const Position&);
+      T& getData();
       Position getNext() const;
   };
 
-  int last;
 
-  bool isValid(const int&) const;
+  bool isValid(const Position&) const;
   void addData(const List<T>&);
-  void swapData(T*&, T*&);
 
  public:
   Position anchor = nullptr;
@@ -59,18 +58,17 @@ class List {
   bool isFull() const;
 
   void insertData(const Position&, const T&);
-  void deleteData(const int&);
+  void deleteData(const Position&);
 
-  int getFirstPos() const;
-  int getLastPos() const;
+  Position getFirstPos() const;
+  Position getLastPos() const;
 
-  int getPreviousPos(const int&) const;
-  int getNextPos(const int&) const;
+  Position getPreviousPos(const Position&) const;
+  Position getNextPos(const Position&) const;
 
-  int findDataLin(const T&) const;
-  int findDataBin(const T&) const;
+  Position findData(const T&);
 
-  T& retrieve(const int&);
+  T& retrieve(const Position&);
 
   std::string toString() const;
 
@@ -99,18 +97,18 @@ class List {
 //Implementacion de los Nodos:
 
 template<class T>
-List<T>::Node::Node() : data(nullptr) {}
+List<T>::Node::Node() {}
 
 template<class T>
-List<T>::Node::Node(const T& value) : data(e) {}
+List<T>::Node::Node(const T& value) : data(value) {}
 
 template<class T>
-void List<T>::setData(const T& e){
+void List<T>::Node::setData(const T& e){
   this->data = e;
 }
 
 template<class T>
-void List<T>setNext(const Position& p){
+void List<T>::Node::setNext(const Position& p){
   this->next = p;
 }
 
@@ -137,12 +135,17 @@ List<T>::List(const List&) {
 }
 
 template<class T>
-bool List<T>::isEmpty(){
+List<T>::~List() {
+  this->deleteAll();
+}
+
+template<class T>
+bool List<T>::isEmpty() const {
   return this->anchor == nullptr;
 }
 
 template<class T>
-void List<T>::insertData(const Position& p,const T& e){
+void List<T>::insertData(const Position& p, const T& e){
   if(p != nullptr && !this->isValid(p)){
     throw Exception("Posicion Invalida. List<T>::insertData()");
   }
@@ -163,27 +166,27 @@ void List<T>::deleteData(const Position& p){
     throw Exception("Posicion Invalida. List::deleteData()");
   }
   
-  if(p == this->anchor);
+  if(p == this->anchor){
     this->anchor = p->getNext();
-  else {
-    this->getPreiousPos(p)->setNext(p->getNext());
+  } else {
+    this->getPreviousPos(p)->setNext(p->getNext());
   }
 
   delete p;
 }
 
 template<class T>
-typename List<T>::Position List<T>::getFirstPost(){
-  return this->anchor
+typename List<T>::Position List<T>::getFirstPos() const {
+  return this->anchor;
 }
 
 template<class T>
-typename List<T>::Position List<T>::getLastPost(){
+typename List<T>::Position List<T>::getLastPos() const {
   if(this->isEmpty()){
-    return nullptr;
+    return nullptr ; 
   }
 
-  Position aux(this->aux);
+  Position aux(this->anchor);
 
   while(aux->getNext() != nullptr){
     aux = aux->getNext();
@@ -193,7 +196,7 @@ typename List<T>::Position List<T>::getLastPost(){
 }
 
 template<class T>
-typename List<T>::Position List<T>::getPreviousPos() const {
+typename List<T>::Position List<T>::getPreviousPos(const Position& p) const {
   Position aux(this->anchor);
 
   while(aux != nullptr && aux->getNext() != p){
@@ -213,10 +216,10 @@ typename List<T>::Position List<T>::getNextPos(const Position& p) const {
 }
 
 template<class T>
-typename List<T>::Position List<T>::findData(const T& e) const{
+typename List<T>::Position List<T>::findData(const T& e) {
   Position aux(this->anchor);
 
-  while(aux != nullptr && aux->getNext() != p){
+  while(aux != nullptr && aux->getData() != e){
     aux = aux->getNext();
   }
 
@@ -226,14 +229,14 @@ typename List<T>::Position List<T>::findData(const T& e) const{
 template<class T>
 T& List<T>::retrieve(const Position& p){
   if(!this->isValid(p)){
-    throw Exception("Position invalida. List::retrieve()")
+    throw Exception("Position invalida. List::retrieve()");
   }
 
   return p->getData();
 }
 
 template<class T>
-string List<T>::toString(){
+string List<T>::toString() const{
   string result;
 
   Position aux(this->anchor);
@@ -242,6 +245,7 @@ string List<T>::toString(){
     result += aux->getData().toString() + "\n";
     aux = aux->getNext();
   }
+  return result;
 }
 
 template<class T>
@@ -277,4 +281,67 @@ void List<T>::addData(const List<T>& l){
     aux = aux->getNext();
 
   }
+}
+
+template <class T>
+List<T> List<T>::operator=(const List<T> &l){
+    this->deleteAll();
+    this->addData(l);
+    return *this;
+}
+
+template<class T>
+void List<T>::deleteAll(){
+  Position aux;
+    while (this->anchor != nullptr)
+    {
+        aux = this->anchor;
+        this->anchor = aux->getNext();
+        delete aux;
+    }
+}
+
+
+////////////////////////
+//Metodos de sorting:
+
+template <class T>
+void List<T>::sortDataBubble() {
+  if(this->getFirstPos()->getNext() == nullptr){
+    throw Exception("Lista vacia, Nada que ordenar. List<T>::sortDataBubble()");
+  }
+
+  Position last(this->getLastPos());
+  Position actual(this->getFirstPos()), aux(actual->getNext()), next;
+  bool flag = false;
+  
+  do {
+    actual = this->getFirstPos();
+    aux = actual->getNext();
+    flag = false;
+    
+    while(actual->getNext() != last){
+      if(actual->getData() > aux->getData()){
+        next = aux->getNext();
+
+        actual->setNext(aux->getNext());
+        aux->setNext(actual);
+
+        if(this->getPreviousPos(actual) == nullptr){
+          anchor = aux; 
+        }else{
+          this->getPreviousPos(actual)->setNext(aux);
+        }
+
+        flag = true;
+        aux = next;
+      }
+        actual = aux;
+        aux = aux->getNext();
+
+    }
+
+    last = actual;
+  } while(flag);
+
 }
