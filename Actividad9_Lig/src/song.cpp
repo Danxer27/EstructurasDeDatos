@@ -54,11 +54,9 @@ void Song::generateMP3File() {
 
 string Song::toString() const {
   stringstream ss;
-  ss << left << setw(20) << this->song_name
-     << left << setw(20) << this->author
-     << left << setw(20) << this->interpreter
-     << left << setw(30) << this->mp3Name
-     << left << setw(10) << to_string(this->ranking);
+  ss << left << setw(20) << this->song_name << left << setw(20) << this->author
+     << left << setw(20) << this->interpreter << left << setw(30)
+     << this->mp3Name << left << setw(10) << to_string(this->ranking);
   return ss.str();
 }
 
@@ -110,7 +108,7 @@ bool Song::operator>=(const Song& s) const {
   return !(*this < s);
 }
 
-//Comparadores
+// Comparadores
 
 int Song::compareTo(const Song& s) {
   return this->song_name.compare(s.song_name);
