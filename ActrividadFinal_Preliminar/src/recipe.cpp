@@ -9,8 +9,8 @@ void Recipe::setRecipeName(const string& s){
     this->recipeName = s;
 }
 
-void Recipe::setIngredients(const Ingredient& e){
-    this->ingredients.insertData(ingredients.getLastPos()+1, e);
+void Recipe::setIngredients(const List<Ingredient>& e){
+    this->ingredients = e;
 }
 
 void Recipe::setPrepTime(const int& h, const int& m, const int& s){
@@ -25,6 +25,10 @@ void Recipe::setProcess(const string& text){
 
 void Recipe::setAuthor(const Name& a){
     this->author = a;
+}
+
+void Recipe::addIngredient(const Ingredient& e){
+    this->ingredients.insertData(ingredients.getLastPos()+1, e);
 }
 
 void Recipe::addProcessStep(const string& text){

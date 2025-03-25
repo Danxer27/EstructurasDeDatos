@@ -4,7 +4,7 @@ using namespace std;
 
 Time::Time() : hours(0), minutes(0), seconds(0) {}
 
-Time::Time(const Time&) {}
+Time::Time(const Time& t) : hours(t.hours), minutes(t.minutes), seconds(t.seconds) {}
 
 void Time::setHours(const int& h){
     this->hours = h;

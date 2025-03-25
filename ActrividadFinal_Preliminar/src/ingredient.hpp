@@ -6,18 +6,18 @@
 class Ingredient {
     private:
         std::string name;
-        float amount;
+        double amount;
         std::string measureUnit;
     public:
         Ingredient();
         Ingredient(const Ingredient&);
 
         void setName(const std::string&);
-        void setAmount(const float&);
+        void setAmount(const double&);
         void setMeasurementUnit(const std::string&);
 
         std::string getName() const;
-        float getAmount() const;
+        double getAmount() const;
         std::string getUnit() const;
 
         std::string toString();

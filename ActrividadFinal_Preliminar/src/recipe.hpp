@@ -19,11 +19,12 @@ class Recipe {
         Recipe(const Recipe&);
 
         void setRecipeName(const std::string&);
-        void setIngredients(const Ingredient&);
+        void setIngredients(const List<Ingredient>&);
         void setPrepTime(const int&, const int&, const int&);
         void setProcess(const std::string&);
         void setAuthor(const Name&);
 
+        void addIngredient(const Ingredient&);
         void addProcessStep(const std::string&);
 
         std::string getRecipeName() const;

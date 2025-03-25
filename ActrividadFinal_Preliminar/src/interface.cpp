@@ -61,10 +61,12 @@ void Interface::Menu(){
 }
 
 void Interface::addRecipe(){
-    string temp_recipe_name, temp_author_name, temp_author_lname;
+    string temp_recipe_name, temp_author_name, temp_author_lname, temp_process("");
     int hours, minutes, seconds;
     char temp_char;
-    
+    Name temp_author_full_name;
+    Time temp_prepTime;
+    Recipe temp_recipe;
 
     fflush(stdin);
     cout << "Introduce la informacion de la Receta." << endl;
@@ -74,9 +76,11 @@ void Interface::addRecipe(){
     cout << "Tiempo de preparacion( HH MM SS ): ";
     cin >> hours >> minutes >> seconds;
 
+
     cout << "Escribe el proces de la receta, cuando termines de escribir ingresa '~' para conclurir: ";
     do{
         cin >> temp_char;
+        temp_process += temp_char;
     }while(temp_char != '~');
 
     cout<< "Ingresa nombre del autor:";
@@ -84,7 +88,46 @@ void Interface::addRecipe(){
     cout<< "Ingresa apellido del autor:";
     getline(cin, temp_author_lname);
 
+    temp_author_full_name.setFirst(temp_author_name);
+    temp_author_full_name.setLast(temp_author_lname);
+
+    //Añadiendo todo a la receta
+    temp_recipe.setRecipeName(temp_recipe_name);
+    temp_recipe.setPrepTime(hours, minutes, seconds);
+    temp_recipe.setProcess(temp_process);
+    temp_recipe.setAuthor(temp_author_full_name);
+
+    //Añadiendo Ingredientes
+    List<Ingredient> temp_list_ingredients;
+    Ingredient temp_ingredient;
+    string temp_ingredient_name, temp_unit;
+    double temp_amount;
+    char option;
+    fflush(stdin);
+
+    do{
+        cout << "Ingresa el nombre del ingrediente: ";
+        getline(cin, temp_ingredient_name);
+        cout << "Ingresa la cantidad y su unidad( 00 kg ): ";
+        cin >> temp_amount >> temp_unit;
+
+        temp_ingredient.setName(temp_ingredient_name);
+        temp_ingredient.setAmount(temp_amount);
+        temp_ingredient.setMeasurementUnit(temp_unit);
+
+        temp_list_ingredients.insertData(temp_list_ingredients.getLastPos(), temp_ingredient);
+
+        cout << "Quieres añadir mas ingredientes(s/n): ";
+        cin>>option;
+    }while(option != 'n');
+
+    temp_recipe.setIngredients(temp_list_ingredients);
     
+    char recipe_option;
+    cout << "Quieres añadir mas recetas(s/n): ";
+    cin>>recipe_option;
 
-
+    if(recipe_option != 'n'){
+        this->addRecipe();
+    }
 }
