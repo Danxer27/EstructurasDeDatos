@@ -5,6 +5,10 @@ Recipe::Recipe() : process("") {}
 
 Recipe::Recipe(const Recipe&){}
 
+void Recipe::setRecipeName(const string& s){
+    this->recipeName = s;
+}
+
 void Recipe::setIngredients(const Ingredient& e){
     this->ingredients.insertData(ingredients.getLastPos()+1, e);
 }
@@ -19,12 +23,16 @@ void Recipe::setProcess(const string& text){
     this->process = text;
 }
 
-void Recipe::setAuthor(const string& a){
+void Recipe::setAuthor(const Name& a){
     this->author = a;
 }
 
 void Recipe::addProcessStep(const string& text){
     this->process += text;
+}
+
+string Recipe::getRecipeName() const{
+    return this->recipeName;
 }
 
 string Recipe::getIngredients(){
@@ -39,68 +47,62 @@ string Recipe::getPrepTime(){
     return this->prepTime.toString();
 }
 //
-string Recipe::getProcess(){
+string Recipe::getProcess() const {
     return this->process;
 }
 
-string Recipe::getAuthor(){
+Name Recipe::getAuthor() const{
     return this->author;
 }
 
-string Recipe::toString(){
+string Recipe::toString() const {
     //
 }
 
 bool Recipe::operator==(const Recipe& r){
-    
+    return (this->recipeName == r.recipeName) && (this->ingredients.toString() == r.ingredients.toString()) && (this->prepTime == r.prepTime);
 }
 
-bool Recipe::operator!=(const Recipe&)
-{
-    
+bool Recipe::operator!=(const Recipe& r){
+    return !(*this == r);
 }
 
-bool Recipe::operator<(const Recipe&)
-{
-    
+bool Recipe::operator>(const Recipe& r){
+    return (this->ingredients.getLastPos() > r.ingredients.getLastPos()) || (this->prepTime > r.prepTime);
 }
 
-bool Recipe::operator<=(const Recipe&)
-{
-    
+bool Recipe::operator>=(const Recipe& r){
+    return (*this == r) || (*this > r);
 }
 
-bool Recipe::operator>(const Recipe&)
-{
-    
+bool Recipe::operator<(const Recipe& r){
+    return !(*this >= r);
 }
 
-bool Recipe::operator>=(const Recipe&)
-{
-    
+bool Recipe::operator<=(const Recipe& r){
+    return !(*this > r);
 }
 
-int Recipe::comapreTo(const Recipe&)
-{
-    
+int Recipe::comapreTo(const Recipe& r){
+    return this->ingredients.toString().compare(r.ingredients.toString());
 }
 
-int Recipe::compare(const Recipe&, const Recipe&)
-{
-    
+int Recipe::compare(const Recipe& a, const Recipe& b){
+    return a.ingredients.toString().compare(b.ingredients.toString());
 }
 
-int Recipe::compareByIngredients(/*PENDING TO ADD*/)
-{
-    
+int Recipe::compareByRecipeName(const Recipe& a, const Recipe& b){
+    return a.recipeName.compare(b.recipeName);
 }
 
-int Recipe::comapreByPrepTime(/*PENDING TO DECIDE*/)
-{
-    
+int Recipe::compareByIngredients(const Recipe& a, const Recipe& b){
+    return a.ingredients.toString().compare(b.ingredients.toString());
 }
 
-int Recipe::compareByAuthor(const string&, const string())
-{
-    
+int Recipe::comapreByPrepTime(Recipe& a, Recipe& b){
+    return a.prepTime - b.prepTime;
+}
+
+int Recipe::compareByAuthor(const Recipe& a, const Recipe& b){
+    return a.author.toString().compare(b.author.toString());
 }

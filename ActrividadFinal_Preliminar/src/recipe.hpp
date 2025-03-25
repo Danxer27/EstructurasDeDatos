@@ -1,35 +1,39 @@
 #ifndef __RECIPE_HPP__
 #define __RECIPE_HPP__
 #include <string>
-#include "list.hpp"
+#include "listTD.hpp"
 #include "ingredient.hpp"
 #include "time.hpp"
+#include "name.hpp"
 
 
 class Recipe {
     private:
+        std::string recipeName;
         List<Ingredient> ingredients;
         Time prepTime;
         std::string process;
-        std::string author;
+        Name author;
     public:
         Recipe();
         Recipe(const Recipe&);
 
+        void setRecipeName(const std::string&);
         void setIngredients(const Ingredient&);
         void setPrepTime(const int&, const int&, const int&);
         void setProcess(const std::string&);
-        void setAuthor(const std::string&);
+        void setAuthor(const Name&);
 
         void addProcessStep(const std::string&);
 
+        std::string getRecipeName() const;
         std::string getIngredients();
         Ingredient getIngredient(const int&);
         std::string getPrepTime();
-        std::string getProcess();
-        std::string getAuthor();
+        std::string getProcess() const;
+        Name getAuthor() const;
 
-        std::string toString();
+        std::string toString() const;
 
         bool operator==(const Recipe&);
         bool operator!=(const Recipe&);
@@ -40,9 +44,10 @@ class Recipe {
 
         int comapreTo(const Recipe&);
         static int compare(const Recipe&, const Recipe&);
-        static int compareByIngredients(/*PENDING TO ADD*/);
-        static int comapreByPrepTime(/*PENDING TO DECIDE*/);
-        static int compareByAuthor(const std::string&, const std::string());
+        static int compareByRecipeName(const Recipe&, const Recipe&);
+        static int compareByIngredients(const Recipe&, const Recipe&);
+        static int comapreByPrepTime(Recipe&, Recipe&);
+        static int compareByAuthor(const Recipe&, const Recipe&);
 
 };
 

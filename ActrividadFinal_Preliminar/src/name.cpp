@@ -1,9 +1,7 @@
 #include "name.hpp"
 using namespace std;
 
-Name::Name(){
-
-}
+Name::Name() {}
 
 Name::Name(const Name& n) : first(n.first), last(n.last) {}
 

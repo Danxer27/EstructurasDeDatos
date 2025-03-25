@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-template <class T, int ARRAYSIZE = 100000>
+template <class T, int ARRAYSIZE = 10000>
 class List {
  private:
   T data[ARRAYSIZE];

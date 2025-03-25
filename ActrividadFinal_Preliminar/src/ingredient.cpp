@@ -36,33 +36,31 @@ std::string Ingredient::toString(){
 
 
 bool Ingredient::operator==(const Ingredient& i) const {
-    //
+    return (this->name.compare(i.name)) && (this->amount == i.amount);
 }
 
-bool Ingredient::operator!=(const Ingredient&) const {
-    
+bool Ingredient::operator!=(const Ingredient& i) const {
+    return !(*this == i);
 }
 
-bool Ingredient::operator<=(const Ingredient&) const {
-    
+bool Ingredient::operator<(const Ingredient& i) const {
+    return (this->amount < i.amount) && (this->measureUnit == i.measureUnit);
 }
 
-bool Ingredient::operator>=(const Ingredient&) const{
-    
+bool Ingredient::operator<=(const Ingredient& i) const {
+    return *this == i || *this < i;
 }
 
-bool Ingredient::operator<(const Ingredient&) const {
-    
+bool Ingredient::operator>=(const Ingredient& i) const{
+    return !(*this < i);
 }
 
-bool Ingredient::operator>(const Ingredient&) const
-{
-    
+bool Ingredient::operator>(const Ingredient& i) const{ 
+    return !(*this <= i);
 }
 
-int Ingredient::compare(const Ingredient& a, const Ingredient& b)
-{
-    
+int Ingredient::compareTo(const Ingredient& i){
+    return this->name.compare(i.name);
 }
 
 int Ingredient::comapreByName(const Ingredient& a, const Ingredient& b){
@@ -73,8 +71,12 @@ int Ingredient::compareByAmount(const Ingredient& a, const Ingredient& b) {
     return a.getAmount() - b.getAmount();
 }
 
+int Ingredient::compareUnit(const Ingredient& a, const Ingredient& b) {
+    return a.getAmount() - b.getAmount();
+}
 
-Ingredient& Ingredient::operator=(const Ingredient&)
-{
-    
+Ingredient& Ingredient::operator=(const Ingredient& i){
+    this->name = i.name;
+    this->amount = i.amount;
+    this->measureUnit = i.measureUnit;
 }

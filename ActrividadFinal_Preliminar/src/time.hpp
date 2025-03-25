@@ -35,8 +35,15 @@ class Time {
         bool operator<(const Time&) const;
         bool operator<=(const Time&) const;
 
-        void operator+ (const int&);
-        void operator- (const int&);
+        int operator+ (const Time&);
+        void operator+= (const Time&);
+        int operator- (const Time&);
+        void operator-= (const Time&);
+        int operator* (const Time&);
+        void operator*= (const Time&);
+        float operator/ (const Time&);
+        void operator/= (const Time&);
+        
 
         int compareTo(const Time&);
         static int compareBySeconds(const Time&, const Time&);

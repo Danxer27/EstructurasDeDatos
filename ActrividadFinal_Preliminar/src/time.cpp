@@ -61,6 +61,8 @@ bool Time::exceeds(const int& e){
     else return false;
 }
 
+//### Operadores Logicos
+
 bool Time::operator== (const Time& e) const{
     return this->getSeconds() == e.getSeconds();
 }
@@ -85,13 +87,42 @@ bool Time::operator<=(const Time& e) const{
     return !(*this > e);
 }
 
-void Time::operator- (const int& m) {
-    this->minutes -= m;
+//### Operadores Aritmeticos
+
+
+int Time::operator+ (const Time& t){
+    return this->seconds + t.seconds;
 }
 
-void Time::operator+ (const int& m){
-    this->minutes += m;
+void Time::operator+= (const Time& t){
+    this->setSeconds(getSeconds() + t.getSeconds());
 }
+
+int Time::operator- (const Time& t){
+    return this->getSeconds() - t.getSeconds();
+}
+
+void Time::operator-= (const Time& t){
+    this->setSeconds(getSeconds() - t.getSeconds());
+}
+
+int Time::operator* (const Time& t){
+    return this->getSeconds() * t.getSeconds();
+}
+
+void Time::operator*= (const Time& t){
+    this->setSeconds(getSeconds() * t.getSeconds());
+}
+
+float Time::operator/ (const Time& t){
+    return this->getSeconds() / t.getSeconds();
+}
+
+void Time::operator/= (const Time& t){
+    this->setSeconds(getSeconds() / t.getSeconds());
+}
+
+//Comparadores
 
 int Time::compareTo(const Time& e){
     this->getSeconds() - e.getSeconds();

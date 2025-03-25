@@ -1,7 +1,7 @@
 #ifndef __INGREDIENT_HPP__
 #define __INGREDIENT_HPP__
 #include <string>
-#include "list.hpp"
+#include "listTD.hpp"
 
 class Ingredient {
     private:
@@ -32,9 +32,9 @@ class Ingredient {
         bool operator>(const Ingredient&) const;
 
         int compareTo(const Ingredient&);
-        static int compare(const Ingredient&, const Ingredient&);
         static int comapreByName(const Ingredient&, const Ingredient&);
         static int compareByAmount(const Ingredient&, const Ingredient&);
+        static int compareUnit(const Ingredient&, const Ingredient&);
 };
 
 
