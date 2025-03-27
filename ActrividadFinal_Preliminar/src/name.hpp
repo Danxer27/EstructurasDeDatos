@@ -1,6 +1,7 @@
 #ifndef __NAME_HPP__
 #define __NAME_HPP__
 #include <string>
+#include <iostream>
 class Name {
     private:
         std::string first;
@@ -30,6 +31,8 @@ class Name {
         static int comapreByFirst(const Name&, const Name&);
         static int compareByLast(const Name&, const Name&);
 
+        friend std::ostream& operator << (std::ostream&, const Name&);
+        friend std::istream& operator >> (std::istream&, Name&);
 };
 
 

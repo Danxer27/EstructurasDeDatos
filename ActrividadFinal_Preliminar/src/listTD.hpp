@@ -13,7 +13,11 @@ class List {
 
   bool isValid(const int&) const;
   void copyAll(const List<T,ARRAYSIZE>&);
-  void swapData(T*&, T*&);
+  void swapData(T&, T&);
+  void swapDataPointers(T*&, T*&);
+
+  void sortDataQuick(const int&, const int&);
+  void sortDataQuick(const int&, const int&, int(const T&, const T&));
 
  public:
   class Exception : public std::exception {
@@ -48,9 +52,11 @@ class List {
   int getNextPos(const int&) const;
 
   int findDataLin(const T&) const;
+  int findDataLin(const T&, int(const T&, const T&)) const;
   int findDataBin(const T&) const;
+  int findDataBin(const T&, int(const T&, const T&)) const;
 
-  T& retrieve(const int&);
+  T& retrieve(const int&) const;
 
   std::string toString() const;
 
@@ -68,11 +74,16 @@ class List {
   void sortDataShellFactor();
   void sortDataShellFactor(int(const T&, const T&));
 
+  void sortDataQuick();
+  void sortDataQuick(int(const T&, const T&));
+
+  bool isSorted();
+
   List<T,ARRAYSIZE> operator=(const List<T,ARRAYSIZE>&);
  
 };
 
-#endif  // __LIST_HPP__
+
 
 // Implementacion de clase:
 
@@ -162,7 +173,7 @@ void List<T,ARRAYSIZE>::deleteAll() {
 
 //check if you can retrieve a pointer
 template <class T, int ARRAYSIZE>
-T& List<T,ARRAYSIZE>::retrieve(const int& p) {
+T& List<T,ARRAYSIZE>::retrieve(const int& p) const {
   if (!this->isValid(p) || data[p] == nullptr) {
     throw Exception("Posicion invalida: retrieve()");
   }
@@ -251,223 +262,125 @@ int List<T,ARRAYSIZE>::findDataBin(const T& e) const {
   return -1;
 }
 
+template <class T, int ARRAYSIZE>
+int List<T,ARRAYSIZE>::findDataBin(const T& e, int cmp(const T&, const T&)) const {
+  int i(0), d(this->last);
+  int m;
+
+  while (i <= d) {
+    m = (i + d) / 2;
+
+    if (cmp(*this->data[m], e) == 0) {
+      return m;
+    } else if (cmp(*this->data[m], e) > 0) {
+      d = m - 1;
+    } else if (cmp(*this->data[m], e) < 0) {
+      i = m + 1;
+    }
+  }
+
+  return -1;
+}
+
 //////////////////////////////////////////////////////////////////
 //#####METODOS DE SORTING ###### 
-template <class T, int ARRAYSIZE>
-void List<T, ARRAYSIZE>::swapData(T*& a, T*& b) {
-  T* aux = a;
-  a = b;
-  b = aux;
-}
-
-template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataBubble(){
-    int i(this->last), j;
-    bool flag;
-
-    do{
-        j = 0;
-        flag = false;
-        while(j < i){
-            if(*(this->data[j]) > *(this->data[j + 1])){
-                this->swapData(data[j], data[j+1]);
-                flag = true;
-            }
-            j++;
-        }
-        i--;
-
-    } while(flag);
-}
-
-template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataBubble(int cmp(const T&, const T&)){
-    int i(this->last), j;
-    bool flag;
-
-    do{
-        j = 0;
-        flag = false;
-        while(j < i){
-            if(cmp(*(this->data[j]), *(this->data[j + 1])) > 0){
-                this->swapData(data[j], data[j+1]);
-                flag = true;
-            }
-            j++;
-        }
-        i--;
-
-    } while(flag);
+template<class T, int ARRAYSIZE>
+void List<T,ARRAYSIZE>::swapDataPointers(T*& a, T*& b) {
+  T* aux(b);
+  b = a;
+  a = aux;
 }
 
 
-
+template <class T, int ARRAYSIZE>
+void List<T,ARRAYSIZE>::sortDataQuick() {
+  this->sortDataQuick(0, this->last);
+}
 
 template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataInsert(){
-  int i(1), j;
-  T* aux;
-  
-  while(i <= this->last){
-    aux = this->data[i];
-    
-    j = i;
-    
-    while(j > 0 && *aux > *this->data[j - 1]){
-      this->data[j] = this->data[j - 1];
-      
+void List<T,ARRAYSIZE>::sortDataQuick(const int& leftEdge,
+                                       const int& rightEdge) {
+  if (leftEdge >= rightEdge) {
+    return;
+  }
+
+  int i(leftEdge), j(rightEdge);
+
+  while (i < j) {
+    while (i < j && *this->data[i] <= *this->data[rightEdge]) {
+      i++;
+    }
+
+    while (i < j && *this->data[j] >= *this->data[rightEdge]) {
       j--;
     }
-    
-    if(i != j){
-      this->data[j] = aux;
+
+    if (i != j) {
+      swapDataPointers(this->data[i], this->data[j]);
     }
   }
+
+  if (i != rightEdge) {
+    this->swapDataPointers(this->data[i], this->data[rightEdge]);
+  }
+
+  // Divide and conquer;
+
+  this->sortDataQuick(leftEdge, i - 1);
+  this->sortDataQuick(i + 1, rightEdge);
 }
 
 template <class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataInsert(int cmp(const T&, const T&)){
-    int i(1), j;
-    T* aux;
-
-    while(i <= this->last){
-        aux = this->data[i];
-
-        j = i;
-
-        while(j > 0 && cmp(*aux, *this->data[j - 1]) < 0){
-            this->data[j] = this->data[j - 1];
-            j--;
-        }
-
-        if(i != j){
-            this->data[j] = aux;
-        }
-        i++;
-    }
+void List<T,ARRAYSIZE>::sortDataQuick(int cmp(const T&, const T&)) {
+  this->sortDataQuick(0, this->last, cmp);
 }
 
-template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataSelect(){
-  int i(0), j, m;
+template <class T, int ARRAYSIZE>
+void List<T,ARRAYSIZE>::sortDataQuick(const int& leftEdge,
+                                       const int& rightEdge,
+                                       int cmp(const T&, const T&)) {
+  if (leftEdge >= rightEdge) {
+    return;
+  }
 
-  while(i < this->last){
-    m = i;
-    j = i + 1;
+  int i(leftEdge), j(rightEdge);
 
-    while(j <= this->last){
-      if(*this->data[j] < *this->data[m]){
-        m = j;
-      }
-      j++;
+  while (i < j) {
+    while (i < j && cmp(*this->data[i], *this->data[rightEdge]) > 0) {
+      i++;
     }
-    if(m != i){
-      this->swapData(this->data[i], this->data[m]);
+
+    while (i < j && cmp(*this->data[j], *this->data[rightEdge]) > 0) {
+      j--;
+    }
+
+    if (i != j) {
+      swapDataPointers(this->data[i], this->data[j]);
+    }
+  }
+
+  if (i != rightEdge) {
+    this->swapDataPointers(this->data[i], this->data[rightEdge]);
+  }
+
+  // Divide and conquer;
+
+  this->sortDataQuick(leftEdge, i - 1);
+  this->sortDataQuick(i + 1, rightEdge);
+}
+
+template <class T, int ARRAYSIZE>
+bool List<T,ARRAYSIZE>::isSorted() {
+  int i(0);
+
+  while (i < this->last) {
+    if (*this->data[i] > *this->data[i + 1]) {
+      return false;
     }
     i++;
   }
-}
-
-template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataSelect(int cmp(const T&, const T&)){
-  int i(0), j, m;
-
-  while(i < this->last){
-    m = i;
-    j = i + 1;
-
-    while(j <= this->last){
-      if(cmp(*(this->data[j]), *(this->data[m])) < 0){
-        m = j;
-      }
-      j++;
-    }
-    if(m != 1){
-      this->swapData(this->data[i], this->data[m]);
-    }
-    i++;
-  }
+  return true;
 }
 
 
-template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataShellFactor(){
-  float fact(1.0/2.0);
-  int dif((this->last + 1) * fact), i, j;
-
-  while(dif > 0){
-    i = dif;
-    while(i <= this->last){
-      j = i;
-
-      while(j >= dif && *this->data[j - dif] > *this->data[j]){
-        this->swapData(this->data[j-dif], this->data[j]);
-
-        j-= dif;
-      }
-      i++;
-    }
-    dif *= fact;
-  }
-}
-
-template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataShellFactor(int cmp(const T&, const T&)){
-  float fact(1.0/2.0);
-  int dif((this->last + 1) * fact), i, j;
-
-  while(dif > 0){
-    i = dif;
-    while(i <= this->last){
-      j = i; 
-
-      while(j >= dif && cmp(*(this->data[j]), *(this->data[j - dif])) < 0){
-        this->swapData(this->data[j], this->data[j - dif]);
-
-        j -= dif;
-      }
-
-      i++;
-    }
-    dif *= fact;
-  }
-}
-
-template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataShellCiura(){
-  int series[] = {510774, 227011, 100894, 44842, 19930, 8858, 3937, 1750, 701, 301, 132, 57,23, 10, 4, 1};
-  int seq(0), dif(series[seq]), i, j;
-
-  while(dif > 0){
-      i = dif;
-      while(i <= this->last){
-          j = i;
-          while(j >= dif && *this->data[j - dif] > *this->data[j]){
-              this->swapData(this->data[j - dif], this->data[j]);
-              j -= dif;
-          }
-          i++;
-      }
-      dif = series[++seq];
-  }
-}
-
-
-template<class T, int ARRAYSIZE>
-void List<T,ARRAYSIZE>::sortDataShellCiura(int cmp(const T&, const T&)){
-  int series[] = {510774, 227011, 100894, 44842, 19930, 8858, 3937, 1750, 701, 301, 132, 57,23, 10, 4, 1};
-  int seq(0), dif(series[seq]), i, j;
-
-  while(dif > 0){
-      i = dif;
-      while(i <= this->last){
-          j = i;
-          while(j >= dif && cmp(*(this->data[j - dif]), *(this->data[j])) > 0){
-              this->swapData(this->data[j - dif], this->data[j]);
-              j -= dif;
-          }
-          i++;
-      }
-      dif = series[++seq];
-  }
-}
+#endif  // __LIST_HPP__

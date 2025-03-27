@@ -1,5 +1,6 @@
-#include <iostream>
+#include "interface.hpp"
 
 int main(){
-    std::cout << "Hello world!" << std::endl;
+    List<Recipe,3000> recetas;
+    Interface UI(recetas);
 }

@@ -1,6 +1,10 @@
+//Archivo de definicion de la Receta
 #ifndef __RECIPE_HPP__
 #define __RECIPE_HPP__
 #include <string>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 #include "listTD.hpp"
 #include "ingredient.hpp"
 #include "time.hpp"
@@ -28,7 +32,7 @@ class Recipe {
         void addProcessStep(const std::string&);
 
         std::string getRecipeName() const;
-        std::string getIngredients();
+        List<Ingredient> getIngredients();
         Ingredient getIngredient(const int&);
         std::string getPrepTime();
         std::string getProcess() const;
@@ -47,9 +51,11 @@ class Recipe {
         static int compare(const Recipe&, const Recipe&);
         static int compareByRecipeName(const Recipe&, const Recipe&);
         static int compareByIngredients(const Recipe&, const Recipe&);
-        static int comapreByPrepTime(Recipe&, Recipe&);
+        static int compareByPrepTime(const Recipe&, const Recipe&);
         static int compareByAuthor(const Recipe&, const Recipe&);
 
+        friend std::ostream& operator << (std::ostream&, const Recipe&);
+        friend std::istream& operator >> (std::istream&, Recipe&);
 };
 
 

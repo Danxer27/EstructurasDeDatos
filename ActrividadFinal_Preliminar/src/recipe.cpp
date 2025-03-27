@@ -1,3 +1,4 @@
+//Archivo de Implementacion de la Receta
 #include "recipe.hpp"
 using namespace std;
 
@@ -39,8 +40,8 @@ string Recipe::getRecipeName() const{
     return this->recipeName;
 }
 
-string Recipe::getIngredients(){
-   return this->ingredients.toString(); 
+List<Ingredient> Recipe::getIngredients(){
+   return this->ingredients; 
 }
 
 Ingredient Recipe::getIngredient(const int& pos){
@@ -60,7 +61,13 @@ Name Recipe::getAuthor() const{
 }
 
 string Recipe::toString() const {
-    //
+    stringstream ss;
+    ss << left << setw(25) << this->getRecipeName() 
+    << left << setw(20) << this->ingredients.toString()
+    << left << setw(10) << this->prepTime.toString() 
+    << left << setw(30) << this->process
+    << left << setw(20) << this->author.toString();
+    return ss.str();
 }
 
 bool Recipe::operator==(const Recipe& r){
@@ -103,10 +110,32 @@ int Recipe::compareByIngredients(const Recipe& a, const Recipe& b){
     return a.ingredients.toString().compare(b.ingredients.toString());
 }
 
-int Recipe::comapreByPrepTime(Recipe& a, Recipe& b){
+int Recipe::compareByPrepTime(const Recipe& a, const Recipe& b){
     return a.prepTime - b.prepTime;
 }
 
 int Recipe::compareByAuthor(const Recipe& a, const Recipe& b){
     return a.author.toString().compare(b.author.toString());
+}
+
+istream& operator >> (istream&, Recipe&)
+{
+    
+}
+
+ostream& operator << (ostream& os, const Recipe& r){
+    os << r.recipeName << '*';
+
+    int i(0);
+    while(i <= r.ingredients.getLastPos()){
+        os << r.ingredients.retrieve(i) << '$';
+
+        i++;
+    }
+    os << '*';
+    os << r.prepTime << '*';
+    os << r.process << '*';
+    os << r.author;
+
+    return os;
 }

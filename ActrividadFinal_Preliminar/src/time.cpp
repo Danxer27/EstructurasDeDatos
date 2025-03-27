@@ -52,7 +52,7 @@ int Time::getSeconds() const {
     return (((this->hours * 60) + this->minutes) * 60) + this->seconds;
 }
 
-std::string Time::toString(){
+std::string Time::toString() const {
     return to_string(this->getHours()) + ":" + to_string(this->getMinutes()) + ":" + to_string(this->getSeconds());
 }
 
@@ -98,7 +98,7 @@ void Time::operator+= (const Time& t){
     this->setSeconds(getSeconds() + t.getSeconds());
 }
 
-int Time::operator- (const Time& t){
+int Time::operator- (const Time& t) const{
     return this->getSeconds() - t.getSeconds();
 }
 
@@ -125,7 +125,7 @@ void Time::operator/= (const Time& t){
 //Comparadores
 
 int Time::compareTo(const Time& e){
-    this->getSeconds() - e.getSeconds();
+    return this->getSeconds() - e.getSeconds();
 }
 
 int Time::compareBySeconds(const Time& a, const Time& b){
@@ -138,5 +138,18 @@ int Time::compareByMinutes(const Time& a, const Time& b){
 
 int Time::compareByHours(const Time& a, const Time& b){
     return a.getOnlyHours() - b.getOnlyHours();
+}
+
+istream& operator >> (istream&, Time&){
+    
+}
+
+ostream& operator << (ostream& os,const Time& t){
+    os << t.getOnlyHours() << '*';
+    os << t.getOnlyMinutes() << '*';
+    os << t.getOnlySeconds();
+
+
+    return os;
 }
 

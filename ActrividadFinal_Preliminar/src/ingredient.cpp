@@ -6,31 +6,31 @@ Ingredient::Ingredient() {}
 
 Ingredient::Ingredient(const Ingredient& i) : name(i.name), amount(i.amount) {}
 
-void Ingredient::setName(const std::string& n){
+void Ingredient::setName(const string& n){
     this->name = n;
 }
 
-void Ingredient::setAmount(const float& a){
+void Ingredient::setAmount(const double& a){
     this->amount = a;
 }
 
-void Ingredient::setMeasurementUnit(const std::string& s){
+void Ingredient::setMeasurementUnit(const string& s){
     this->measureUnit = s;
 }
 
-std::string Ingredient::getName() const {
+string Ingredient::getName() const {
     return this->name;
 }
 
-float Ingredient::getAmount() const{
+double Ingredient::getAmount() const{
     return this->amount;
 }
 
-std::string Ingredient::getUnit() const {
+string Ingredient::getUnit() const {
     return this->measureUnit;
 }
 
-std::string Ingredient::toString(){
+string Ingredient::toString(){
     return this->getName() + " " + to_string(this->getAmount()) + this->getUnit();
 }
 
@@ -75,8 +75,22 @@ int Ingredient::compareUnit(const Ingredient& a, const Ingredient& b) {
     return a.getAmount() - b.getAmount();
 }
 
+
 Ingredient& Ingredient::operator=(const Ingredient& i){
     this->name = i.name;
     this->amount = i.amount;
     this->measureUnit = i.measureUnit;
+}
+
+istream& operator >> (istream&, Ingredient&)
+{
+    
+}
+
+ostream& operator << (ostream& os, const Ingredient& i){
+    os << i.name << '*';
+    os << i.amount << '*';
+    os << i.measureUnit;
+
+    return os;
 }
