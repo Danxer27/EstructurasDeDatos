@@ -12,6 +12,7 @@
 class Interface {
     private:
         List<Recipe,3000>* recipes;
+        bool is_Sorted;
     public:
         Interface(List<Recipe,3000>&);
 

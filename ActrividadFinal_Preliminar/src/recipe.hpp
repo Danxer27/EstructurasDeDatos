@@ -3,8 +3,6 @@
 #define __RECIPE_HPP__
 #include <string>
 #include <iostream>
-#include <iomanip>
-#include <sstream>
 #include "listTD.hpp"
 #include "ingredient.hpp"
 #include "time.hpp"
@@ -18,6 +16,7 @@ class Recipe {
         Time prepTime;
         std::string process;
         Name author;
+        std::string cathegory;
     public:
         Recipe();
         Recipe(const Recipe&);
@@ -27,6 +26,7 @@ class Recipe {
         void setPrepTime(const int&, const int&, const int&);
         void setProcess(const std::string&);
         void setAuthor(const Name&);
+        void setCathegory(const std::string&);
 
         void addIngredient(const Ingredient&);
         void addProcessStep(const std::string&);
@@ -37,6 +37,7 @@ class Recipe {
         std::string getPrepTime();
         std::string getProcess() const;
         Name getAuthor() const;
+        std::string getCathegory() const;
 
         std::string toString() const;
 
@@ -53,6 +54,7 @@ class Recipe {
         static int compareByIngredients(const Recipe&, const Recipe&);
         static int compareByPrepTime(const Recipe&, const Recipe&);
         static int compareByAuthor(const Recipe&, const Recipe&);
+        static int compareByCathergory(const Recipe&, const Recipe&);
 
         friend std::ostream& operator << (std::ostream&, const Recipe&);
         friend std::istream& operator >> (std::istream&, Recipe&);

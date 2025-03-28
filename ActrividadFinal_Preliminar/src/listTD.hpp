@@ -62,22 +62,11 @@ class List {
 
   void deleteAll();
 
-  //Sort Methods
-  void sortDataBubble();
-  void sortDataBubble(int(const T&, const T&));
-  void sortDataInsert();
-  void sortDataInsert(int(const T&, const T&));
-  void sortDataSelect();
-  void sortDataSelect(int(const T&, const T&));
-  void sortDataShellCiura();
-  void sortDataShellCiura(int(const T&, const T&));
-  void sortDataShellFactor();
-  void sortDataShellFactor(int(const T&, const T&));
-
   void sortDataQuick();
   void sortDataQuick(int(const T&, const T&));
 
   bool isSorted();
+  bool isSorted(int(const T&, const T&));
 
   List<T,ARRAYSIZE> operator=(const List<T,ARRAYSIZE>&);
  
@@ -243,6 +232,18 @@ int List<T,ARRAYSIZE>::findDataLin(const T& e) const {
 }
 
 template <class T, int ARRAYSIZE>
+int List<T,ARRAYSIZE>::findDataLin(const T& e, int cmp(const T&, const T&)) const {
+  int i(0);
+  while (i <= this->last) {
+    if (cmp(e, *data[i]) > 0) {
+      return i;
+    }
+    i++;
+  }
+  return -1;
+}
+
+template <class T, int ARRAYSIZE>
 int List<T,ARRAYSIZE>::findDataBin(const T& e) const {
   int i(0), d(this->last);
   int m;
@@ -346,11 +347,11 @@ void List<T,ARRAYSIZE>::sortDataQuick(const int& leftEdge,
   int i(leftEdge), j(rightEdge);
 
   while (i < j) {
-    while (i < j && cmp(*this->data[i], *this->data[rightEdge]) > 0) {
+    while (i < j && cmp(*this->data[i], *this->data[rightEdge]) < 0) {
       i++;
     }
 
-    while (i < j && cmp(*this->data[j], *this->data[rightEdge]) > 0) {
+    while (i < j && cmp(*this->data[j], *this->data[rightEdge]) >= 0) {
       j--;
     }
 
@@ -381,6 +382,20 @@ bool List<T,ARRAYSIZE>::isSorted() {
   }
   return true;
 }
+
+template <class T, int ARRAYSIZE>
+bool List<T,ARRAYSIZE>::isSorted(int cmp(const T&, const T&)) {
+  int i(0);
+
+  while (i < this->last) {
+    if (cmp(*this->data[i], *this->data[i + 1]) > 0) {
+      return false;
+    }
+    i++;
+  }
+  return true;
+}
+
 
 
 #endif  // __LIST_HPP__

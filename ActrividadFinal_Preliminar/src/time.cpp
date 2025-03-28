@@ -53,7 +53,7 @@ int Time::getSeconds() const {
 }
 
 std::string Time::toString() const {
-    return to_string(this->getHours()) + ":" + to_string(this->getMinutes()) + ":" + to_string(this->getSeconds());
+    return to_string(this->hours) + ":" + to_string(this->minutes) + ":" + to_string(this->seconds);
 }
 
 bool Time::exceeds(const int& e){

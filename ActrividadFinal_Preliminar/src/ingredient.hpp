@@ -2,6 +2,8 @@
 #define __INGREDIENT_HPP__
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include "listTD.hpp"
 
 class Ingredient {

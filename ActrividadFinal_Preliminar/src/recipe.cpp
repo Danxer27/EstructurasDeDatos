@@ -4,7 +4,7 @@ using namespace std;
 
 Recipe::Recipe() : process("") {}
 
-Recipe::Recipe(const Recipe&){}
+Recipe::Recipe(const Recipe& r) : recipeName(r.recipeName), ingredients(r.ingredients), prepTime(r.prepTime), process(r.process), author(r.author) {}
 
 void Recipe::setRecipeName(const string& s){
     this->recipeName = s;
@@ -26,6 +26,10 @@ void Recipe::setProcess(const string& text){
 
 void Recipe::setAuthor(const Name& a){
     this->author = a;
+}
+
+void Recipe::setCathegory(const std::string& c){
+    this->cathegory = c;
 }
 
 void Recipe::addIngredient(const Ingredient& e){
@@ -60,18 +64,25 @@ Name Recipe::getAuthor() const{
     return this->author;
 }
 
+std::string Recipe::getCathegory() const {
+    return this->cathegory;
+}
+
 string Recipe::toString() const {
-    stringstream ss;
-    ss << left << setw(25) << this->getRecipeName() 
-    << left << setw(20) << this->ingredients.toString()
-    << left << setw(10) << this->prepTime.toString() 
-    << left << setw(30) << this->process
-    << left << setw(20) << this->author.toString();
-    return ss.str();
+    string result("\nReceta:");
+
+    result += this->recipeName + 
+    "\nTiempo de Preparacion: " + this->prepTime.toString() +
+    "\nCategoria: " + this->cathegory +
+    "\nAutor: " + this->author.toString() + 
+    "\nProceso: " + this->process +
+    "\nIngredientes:" + this->ingredients.toString();
+
+    return result;
 }
 
 bool Recipe::operator==(const Recipe& r){
-    return (this->recipeName == r.recipeName) && (this->ingredients.toString() == r.ingredients.toString()) && (this->prepTime == r.prepTime);
+    return (this->recipeName == r.recipeName);
 }
 
 bool Recipe::operator!=(const Recipe& r){
@@ -79,7 +90,8 @@ bool Recipe::operator!=(const Recipe& r){
 }
 
 bool Recipe::operator>(const Recipe& r){
-    return (this->ingredients.getLastPos() > r.ingredients.getLastPos()) || (this->prepTime > r.prepTime);
+    return (this->recipeName == r.recipeName);
+    // return (this->ingredients.getLastPos() > r.ingredients.getLastPos()) || (this->prepTime > r.prepTime);
 }
 
 bool Recipe::operator>=(const Recipe& r){
@@ -118,6 +130,10 @@ int Recipe::compareByAuthor(const Recipe& a, const Recipe& b){
     return a.author.toString().compare(b.author.toString());
 }
 
+int Recipe::compareByCathergory(const Recipe& a, const Recipe& b){
+    return a.cathegory.compare(b.cathegory);
+}
+
 istream& operator >> (istream&, Recipe&)
 {
     
@@ -135,7 +151,8 @@ ostream& operator << (ostream& os, const Recipe& r){
     os << '*';
     os << r.prepTime << '*';
     os << r.process << '*';
-    os << r.author;
+    os << r.author << '*';
+    os << r.cathegory;
 
     return os;
 }

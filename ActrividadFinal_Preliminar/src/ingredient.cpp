@@ -4,7 +4,7 @@ using namespace std;
 
 Ingredient::Ingredient() {}
 
-Ingredient::Ingredient(const Ingredient& i) : name(i.name), amount(i.amount) {}
+Ingredient::Ingredient(const Ingredient& i) : name(i.name), amount(i.amount), measureUnit(i.measureUnit) {}
 
 void Ingredient::setName(const string& n){
     this->name = n;
@@ -31,7 +31,9 @@ string Ingredient::getUnit() const {
 }
 
 string Ingredient::toString(){
-    return this->getName() + " " + to_string(this->getAmount()) + this->getUnit();
+    stringstream amountStr;
+    amountStr << fixed << setprecision(2) << this->getAmount();
+    return "\t" + this->getName() + " " + amountStr.str() + " " + this->getUnit();
 }
 
 

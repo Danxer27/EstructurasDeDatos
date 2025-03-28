@@ -1,0 +1,82 @@
+Pasta Alfredo
+00 25 00
+Cocina la pasta en agua con sal hasta que este al dente. En una sarten, derrite la mantequilla y aniade la crema de leche, mezclando bien. Agrega el queso parmesano y la pimienta negra. Incorpora la pasta y revuelve hasta que la salsa se adhiera bien. Sirve caliente. ~
+Juan
+Perez
+Pasta
+200 g
+s
+Mantequilla
+50 g
+s
+Crema de leche
+200 ml
+s
+Queso parmesano
+100 g
+s
+Pimienta negra
+5 g
+n
+s
+Tacos de Carne Asada
+00 40 00
+Marina la carne con jugo de limon, ajo, sal y pimienta por 30 minutos. Luego asala en una parrilla caliente hasta que esté dorada. Corta en trozos pequenios y sirve en tortillas de maiz con cebolla, cilantro y salsa. ~  
+Ana
+Lopez
+Carne de res
+500 g
+s
+Jugo de limon
+50 ml
+s
+Ajo picado
+10 g
+s
+Tortillas de maiz
+6 unidades
+s
+Cilantro
+10 g
+s
+Cebolla
+50 g
+n
+s
+Ensalada Cesar
+00 15 00
+Lava y corta la lechuga en trozos. Mezcla con aderezo Cesar, crutones y queso parmesano rallado. Aniade pollo a la parrilla en trozos si se desea. Sirve frio. ~
+Carlos
+Mendoza
+Lechuga romana
+200 g
+s
+Aderezo Cesar
+50 ml
+s
+Crutones
+100 g
+s
+Queso parmesano
+50 g
+n
+s
+
+Sopa de Tomate
+00 30 00
+Sofrie la cebolla y el ajo en una olla con aceite de oliva. Agrega los tomates picados y cocina hasta que se deshagan. Aniade caldo de verduras y deja hervir. Licua hasta obtener una textura suave y sirve caliente con crutones. ~
+Maria
+Rodriguez
+Tomate
+500 g
+s
+Cebolla
+100 g
+s
+Ajo
+10 g
+s
+Caldo de verduras
+500 ml
+n
+n

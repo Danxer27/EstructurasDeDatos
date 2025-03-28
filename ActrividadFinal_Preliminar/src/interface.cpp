@@ -2,7 +2,7 @@
 #include "interface.hpp"
 using namespace std;
 
-Interface::Interface(List<Recipe,3000>& l){
+Interface::Interface(List<Recipe,3000>& l)  {
     this->recipes = &l;
     this->Menu();
 }
@@ -68,6 +68,7 @@ void Interface::addRecipe(){
     Time temp_prepTime;
     Recipe temp_recipe;
 
+
     fflush(stdin);
     cout << "Introduce la informacion de la Receta." << endl;
     cout << "Nombre de la Receta: ";
@@ -78,9 +79,10 @@ void Interface::addRecipe(){
 
 
     cout << "Escribe el proces de la receta, cuando termines de escribir ingresa '~' para conclurir: ";
+
     do{
+      temp_process += temp_char;
         cin >> temp_char;
-        temp_process += temp_char;
     }while(temp_char != '~');
 
     fflush(stdin);
@@ -104,9 +106,9 @@ void Interface::addRecipe(){
     string temp_ingredient_name, temp_unit;
     double temp_amount;
     char option;
-    fflush(stdin);
-
+    
     do{
+        fflush(stdin);
         cout << "Ingresa el nombre del ingrediente: ";
         getline(cin, temp_ingredient_name);
         cout << "Ingresa la cantidad y su unidad( 00 kg ): ";
@@ -122,15 +124,17 @@ void Interface::addRecipe(){
           cout << e.what() << endl;
         }
 
-        return;
         cout << "Quieres añadir mas ingredientes(s/n): ";
         cin>>option;
-    }while(option != 'n');
+
+    }while(option == 's');
 
     temp_list_ingredients.sortDataQuick(Ingredient::comapreByName);
 
+    temp_recipe.setIngredients(temp_list_ingredients);
+    
     try {
-      temp_recipe.setIngredients(temp_list_ingredients);
+      recipes->insertData(recipes->getLastPos(), temp_recipe);
     } catch (const List<Recipe>::Exception& e) {
       cout << e.what() << endl;
     }
@@ -148,15 +152,21 @@ void Interface::addRecipe(){
 void Interface::modifyRecipe(){ 
   int recipe_pos;
 
-  //AÑADIR VERIFICACION SI YA HAY RECETAS
-
-  cout << "Ingresa el numero de receta que deseas moidificar: ";
-  cin >> recipe_pos;
-
-  this->modifyRecipe(recipes->retrieve(recipe_pos));
-
+  if(recipes->isEmpty()){
+    cout << "Aun no hay recetas para modificar." << endl;
+    
+  }else {
+ 
+    cout << "Ingresa el numero de receta que deseas moidificar: ";
+    cin >> recipe_pos;
+    
+    this->modifyRecipe(recipes->retrieve(recipe_pos));
+    
+  }
 }
 
+
+//Modificar alguna receta y algun ingrediente
 void Interface::modifyRecipe(Recipe& p){
   int option, h,m,s, ing_option, ing_pos, temp_num, ing_mod;
   string temp_st;
@@ -164,6 +174,11 @@ void Interface::modifyRecipe(Recipe& p){
   string temp_author_name, temp_author_lname;
   Name temp_name;
   char againOption, option_add, temp_char;
+
+  if(recipes->isEmpty()){
+    cout << "Aun no hay recetas para modificar." << endl;
+    return;
+  }
 
     cout << "Que queires modificar de la receta: "<< endl 
     << "1. Nombre de la receta." << endl
@@ -215,6 +230,10 @@ void Interface::modifyRecipe(Recipe& p){
           break;
       
         case 4:
+          if(p.getIngredients().isEmpty()){
+            cout << "Esta receta aun no contiene ingredientes para modificar." << endl;
+            break;
+          }
 
           cout << "Que numero de ingrediente quieres modificar?: ";
           cin >> ing_pos;
@@ -225,7 +244,7 @@ void Interface::modifyRecipe(Recipe& p){
           << "3. Unidad de Medida." << endl
           << "Opcion:";
           cin >> ing_option;
-          // ANADIR VERIFICACION
+      
           switch (ing_option) {
             case 1:
               fflush(stdin);
@@ -289,39 +308,99 @@ void Interface::modifyRecipe(Recipe& p){
 
     cout << "Quieres modificar alguna otra cosa de la receta? (s/n): ";
     cin >> againOption;
-    if(againOption != 'n'){
+    if(againOption == 's'){
       this->modifyRecipe(p);
     }
 }
 
 void Interface::deleteRecipe(){
+  int pos;
+  if(recipes->isEmpty()){
+    cout << "Aun no hay canciones para buscar. "<<endl;
+    this->Menu();
+  }
+
+  cout << "Ingresa la posicion de la receta de quieres eliminar: ";
+  cin >> pos;
   
+  try {
+    recipes->deleteData(pos);
+  } catch (const List<Recipe>::Exception& e) {
+    cout << e.what() << endl;
+  }
+
+  cout << "Cancion Eliminada." << endl;
 }
 
 void Interface::showRecipes(){
   system("cls");
-  cout << "Lista de Recetas:" << endl;
-  // stringstream ss;
-  // ss << left << setw(20) << "Nombre" << left << setw(20) << "Autor" << left
-  //    << setw(20) << "Interprete" << left << setw(30) << "Archivo.MP3" << left
-  //    << setw(10) << "Ranking";
-  // cout << ss.str() << endl;
-
+  
   if (recipes->isEmpty()) {
-    cout << "Aun no hay recetas en la lista." << endl;
+    cout << "Aun no hay recetas en la lista por mostrar." << endl;
   } else {
+    cout << "Lista de Recetas:" << endl;
     cout << recipes->toString() << endl;
+    
   }
 }
 
 void Interface::findRecipe(){
+  string sName;
+  int findMethod, findOption, pos;
+  char doSort;
+  Recipe temp_recipe;
+  
+  if(recipes->isEmpty()){
+    cout << "Aun no hay recetas para buscar. "<<endl;
+    return;
+  }
+
+  cout << "Buscar por nombre de la receta o por categoria(1/2): ";
+  cin >> findOption;
+  
+  if (findOption == 1) {
+    cout << "Ingrese el nombre de la receta a buscar: ";
+    fflush(stdin);
+    getline(cin, sName);
+    temp_recipe.setRecipeName(sName);
+  } else {
+    cout << "Ingrese la categoria de la receta a buscar: ";
+    cin >> sName;
+    temp_recipe.setCathegory(sName);
+  }
+  
+  if (findOption == 1) {
+    
+      (recipes->isSorted(Recipe::compareByRecipeName)) ? pos = recipes->findDataBin(temp_recipe, Recipe::compareByRecipeName) :pos = recipes->findDataLin(temp_recipe, Recipe::compareByRecipeName);
+
+  } else {
+
+      pos = recipes->findDataBin(temp_recipe, Recipe::compareByCathergory);
+      if(pos == -1){
+        pos = recipes->findDataLin(temp_recipe, Recipe::compareByCathergory);
+      }
+  }
+  if (pos == -1) {
+    cout << "\nCancion no encontrada" << endl;
+  } else {
+    cout << "\nLa cancion en la posicion " << pos
+    << " es: " << recipes->retrieve(pos).toString() << endl;
+  }
 }
 
 void Interface::sortRecipes(){
-  int option;
+  int option(0);
+
+  if(recipes->isEmpty()){
+    cout << "Aun no hay recetas para ordenar." << endl;
+    return;
+  }
+
   cout << "Deseas ordenar por Nombre o por tiempo de preparacion?(1/2):";
-  
-  option == 1 ? recipes->sortDataQuick(Recipe::compareByRecipeName) : recipes->sortDataQuick(Recipe::compareByPrepTime);
+  cin >> option;
+
+  if(option == 1) recipes->sortDataQuick(Recipe::compareByRecipeName);
+  else recipes->sortDataQuick(Recipe::compareByPrepTime);
 
   this->showRecipes();
   
@@ -329,6 +408,12 @@ void Interface::sortRecipes(){
 
 
 void Interface::saveToDiskRecipes(){
+
+  if(recipes->isEmpty()){
+    cout << "Aun no hay recetas para guardar." << endl;
+    return;
+  }
+
   string fileName;
   cout << "Nombre del archivo: ";
   cin >> fileName;
