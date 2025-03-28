@@ -19,9 +19,11 @@ class Interface {
         void Menu();
         
         void addRecipe();
+        Ingredient& addIngredient();
         void modifyRecipe();
         void modifyRecipe(Recipe&);
         void deleteRecipe();
+        void deleteAllRecipes();
         void showRecipes();
         void findRecipe();
         void sortRecipes();

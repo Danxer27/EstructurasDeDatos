@@ -8,18 +8,19 @@ Interface::Interface(List<Recipe,3000>& l)  {
 }
 
 void Interface::Menu(){
-    int option(0);
+    int option(1);
 
-  while (option != 9) {
+  while (option != 0) {
     cout << "1. Agregar Receta." << endl;
     cout << "2. Modificar Receta." << endl;
     cout << "3. Eliminar Receta." << endl;
     cout << "4. Mostrar Recetas." << endl;
     cout << "5. Buscar Recetas." << endl;
     cout << "6. Ordenar Recetas." << endl;
-    cout << "7. Guardar en Disco." << endl;
-    cout << "8. Leer del Disco." << endl;
-    cout << "9. Salir" << endl;
+    cout << "7. Eliminar todas las recetas." << endl;
+    cout << "8. Guardar en Disco." << endl;
+    cout << "9. Leer del Disco." << endl;
+    cout << "0. Salir" << endl;
     cout << "Opcion: ";
     cin >> option;
     cout << endl;
@@ -43,13 +44,16 @@ void Interface::Menu(){
      case 6  :
         this->sortRecipes();
         break;
-     case 7:
-        this->saveToDiskRecipes();
+      case 7:
+        this->deleteAllRecipes();
         break;
      case 8:
+        this->saveToDiskRecipes();
+        break;
+     case 9:
         this->readFromDiskRecipes();
         break;
-      case 9:
+      case 0:
         cout << "Saliendo..." << endl;
         break;
       default:
@@ -103,27 +107,16 @@ void Interface::addRecipe(){
     //Añadiendo Ingredientes
     List<Ingredient> temp_list_ingredients;
     Ingredient temp_ingredient;
-    string temp_ingredient_name, temp_unit;
-    double temp_amount;
     char option;
     
     do{
-        fflush(stdin);
-        cout << "Ingresa el nombre del ingrediente: ";
-        getline(cin, temp_ingredient_name);
-        cout << "Ingresa la cantidad y su unidad( 00 kg ): ";
-        cin >> temp_amount >> temp_unit;
+      temp_ingredient = this->addIngredient();
 
-        temp_ingredient.setName(temp_ingredient_name);
-        temp_ingredient.setAmount(temp_amount);
-        temp_ingredient.setMeasurementUnit(temp_unit);
-
-        try {
-          temp_list_ingredients.insertData(temp_list_ingredients.getLastPos(), temp_ingredient);
-        } catch (const List<Ingredient>::Exception& e) {
-          cout << e.what() << endl;
-        }
-
+      try {
+        temp_list_ingredients.insertData(temp_list_ingredients.getLastPos(), temp_ingredient);
+      } catch (const List<Ingredient>::Exception& e) {
+        cout << e.what() << endl;
+      }
         cout << "Quieres añadir mas ingredientes(s/n): ";
         cin>>option;
 
@@ -147,6 +140,25 @@ void Interface::addRecipe(){
         this->addRecipe();
     }
 }
+
+Ingredient& Interface::addIngredient(){
+    Ingredient temp_ingredient;
+    string temp_ingredient_name, temp_unit;
+    double temp_amount;
+
+    fflush(stdin);
+    cout << "Ingresa el nombre del ingrediente: ";
+    getline(cin, temp_ingredient_name);
+    cout << "Ingresa la cantidad y su unidad( 00 kg ): ";
+    cin >> temp_amount >> temp_unit;
+    temp_ingredient.setName(temp_ingredient_name);
+    temp_ingredient.setAmount(temp_amount);
+    temp_ingredient.setMeasurementUnit(temp_unit);
+    
+    return temp_ingredient;
+}
+
+
 
 //Caso de que se quiera modificar desde el menu sin conocer una receta especifica
 void Interface::modifyRecipe(){ 
@@ -174,6 +186,7 @@ void Interface::modifyRecipe(Recipe& p){
   string temp_author_name, temp_author_lname;
   Name temp_name;
   char againOption, option_add, temp_char;
+  Ingredient temp_ingredient;
 
   if(recipes->isEmpty()){
     cout << "Aun no hay recetas para modificar." << endl;
@@ -214,15 +227,32 @@ void Interface::modifyRecipe(Recipe& p){
 
       switch (ing_mod) {
         case 1:
-        //ANADIR PARA agregar ingredientes
+
             do{
+              p.addIngredient(this->addIngredient());
               cout << "Quieres añadir mas ingredientes(s/n): ";
               cin >> option_add;
+
           }while(option_add != 'n');
 
           break;
         case 2:
-        //añadir codigo para eliminar
+          int posIng;
+          if(p.getIngredients().isEmpty()){
+            cout << "Aun no hay ingredientes eliminar para buscar. "<<endl;
+            break;
+          }
+        
+          cout << "Ingresa la posicion del ingrediente de quieres eliminar: ";
+          cin >> posIng;
+          
+          try {
+            p.getIngredients().deleteData(posIng);
+          } catch (const List<Recipe>::Exception& e) {
+            cout << e.what() << endl;
+          }
+        
+          cout << "Ingrediente Eliminado." << endl;
           break;
 
         case 3:
@@ -329,7 +359,7 @@ void Interface::deleteRecipe(){
     cout << e.what() << endl;
   }
 
-  cout << "Cancion Eliminada." << endl;
+  cout << "Receta Eliminada." << endl;
 }
 
 void Interface::showRecipes(){

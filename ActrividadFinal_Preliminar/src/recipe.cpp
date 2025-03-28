@@ -44,7 +44,7 @@ string Recipe::getRecipeName() const{
     return this->recipeName;
 }
 
-List<Ingredient> Recipe::getIngredients(){
+List<Ingredient>& Recipe::getIngredients(){
    return this->ingredients; 
 }
 

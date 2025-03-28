@@ -32,7 +32,7 @@ class Recipe {
         void addProcessStep(const std::string&);
 
         std::string getRecipeName() const;
-        List<Ingredient> getIngredients();
+        List<Ingredient>& getIngredients();
         Ingredient getIngredient(const int&);
         std::string getPrepTime();
         std::string getProcess() const;
