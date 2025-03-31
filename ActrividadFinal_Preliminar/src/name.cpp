@@ -74,8 +74,11 @@ int Name::compareByLast(const Name& a, const Name& b){
     return a.getLast().compare(b.getLast());
 }
 
-istream& operator >> (istream&, Name&){
-    
+istream& operator >> (istream& is, Name& n){
+    getline(is, n.last, '*');
+    getline(is, n.first, '*');
+
+    return is;
 }
 
 ostream& operator << (ostream& os, const Name& n){

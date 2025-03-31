@@ -134,20 +134,32 @@ int Recipe::compareByCathergory(const Recipe& a, const Recipe& b){
     return a.cathegory.compare(b.cathegory);
 }
 
-istream& operator >> (istream&, Recipe&)
-{
-    
+istream& operator >> (istream& is, Recipe& r){
+    Ingredient temp_ing;
+    string temp_str;
+    getline(is, r.recipeName, '*');
+    while (is.peek() != '*') {
+        is >> temp_ing;
+        r.addIngredient(temp_ing);
+    }
+    is >> r.prepTime;
+    getline(is, r.process, '*');
+    is >> r.author;
+    getline(is, r.cathegory, '*');
+
+    return is;
+
 }
 
 ostream& operator << (ostream& os, const Recipe& r){
     os << r.recipeName << '*';
 
     int i(0);
-    while(i <= r.ingredients.getLastPos()){
+     while(i <= r.ingredients.getLastPos()){
         os << r.ingredients.retrieve(i) << '$';
 
-        i++;
-    }
+         i++;
+     }
     os << '*';
     os << r.prepTime << '*';
     os << r.process << '*';

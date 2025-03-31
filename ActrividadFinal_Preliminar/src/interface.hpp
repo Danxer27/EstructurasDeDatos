@@ -24,7 +24,7 @@ class Interface {
         void modifyRecipe(Recipe&);
         void deleteRecipe();
         void deleteAllRecipes();
-        void showRecipes();
+        void showRecipes(const bool&);
         void findRecipe();
         void sortRecipes();
         void saveToDiskRecipes();

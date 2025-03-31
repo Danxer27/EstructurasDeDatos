@@ -36,7 +36,7 @@ void Interface::Menu(){
         this->deleteRecipe();
         break;
       case 4:
-        this->showRecipes();
+        this->showRecipes(false);
         break;
       case 5:
         this->findRecipe();
@@ -66,7 +66,7 @@ void Interface::Menu(){
 
 void Interface::addRecipe(){
     string temp_recipe_name, temp_author_name, temp_author_lname, temp_process("");
-    int hours, minutes, seconds;
+    int hours, minutes, seconds, cathegory;
     char temp_char;
     Name temp_author_full_name;
     Time temp_prepTime;
@@ -97,6 +97,34 @@ void Interface::addRecipe(){
 
     temp_author_full_name.setFirst(temp_author_name);
     temp_author_full_name.setLast(temp_author_lname);
+
+    cout << "Selecciona la categoria de la receta: " << endl
+    << "1. Desayno." << endl
+    << "2. Comida." << endl
+    << "3. Cena." << endl
+    << "4. Navidenia." << endl
+    << "Opcion: ";
+    cin >> cathegory;
+
+      switch (cathegory){
+      case 1:
+        temp_recipe.setCathegory("Desayuno");
+        break;
+      case 2:
+        temp_recipe.setCathegory("Comida");
+        break;
+      case 3:
+        temp_recipe.setCathegory("Cena");
+        break;
+      case 4:
+        temp_recipe.setCathegory("Navidenia");
+        break;
+      default:
+        temp_recipe.setCathegory("None");
+        break;
+      }
+
+
 
     //Añadiendo todo a la receta
     temp_recipe.setRecipeName(temp_recipe_name);
@@ -199,6 +227,7 @@ void Interface::modifyRecipe(Recipe& p){
     << "3. Tiempo de preparacion." << endl 
     << "4. Proceso de preparacion." << endl 
     << "5. Nombre del autor." << endl
+    << "6. Categoria." << endl
     << "Opcion: ";
     cin >> option;
     
@@ -256,7 +285,9 @@ void Interface::modifyRecipe(Recipe& p){
           break;
 
         case 3:
-        //añadir codigo para vaciar
+          p.getIngredients().deleteAll();
+          cout << "Ingredientes Eliminados." << endl;
+
           break;
       
         case 4:
@@ -281,7 +312,6 @@ void Interface::modifyRecipe(Recipe& p){
               cout<< "Ingresa el nuevo nombre del ingrediente:";
               getline(cin, temp_st);
 
-              // p.getIngredient(ing_option).setName(temp_st);
               p.getIngredients().retrieve(ing_pos).setName(temp_st);
               break;
             case 2:
@@ -289,13 +319,12 @@ void Interface::modifyRecipe(Recipe& p){
               cin >> temp_num;
 
               p.getIngredients().retrieve(ing_pos).setAmount(temp_num);
-              // p.getIngredient(ing_option).setAmount(temp_num);
+          
             case 3:
               fflush(stdin);
               cout<< "Ingresa la nueva unidad de medida:";
               getline(cin, temp_st);
 
-              // p.getIngredient(ing_option).setName(temp_st);
               p.getIngredients().retrieve(ing_pos).setMeasurementUnit(temp_st);
             default:
               cout << "Opcion no valida." << endl;
@@ -329,6 +358,37 @@ void Interface::modifyRecipe(Recipe& p){
         p.setAuthor(temp_name);
 
         break;
+    case 6:
+      int cat;
+      fflush(stdin);
+      cout<< "Ingresa la nueva categoria:" << endl
+      << "1. Desayno." << endl
+      << "2. Comida." << endl
+      << "3. Cena." << endl
+      << "4. Navidenia." << endl
+      << "Opcion: ";
+      cin >> cat;
+
+      
+      switch (cat){
+        case 1:
+          p.setCathegory("Desayuno");
+          break;
+        case 2:
+          p.setCathegory("Comida");
+          break;
+        case 3:
+          p.setCathegory("Cena");
+          break;
+        case 4:
+          p.setCathegory("Navidenia");
+          break;
+        default:
+          p.setCathegory("None");
+          break;
+        }
+
+      break;
     
     default:
         cout << "Opcion invalida." << endl;
@@ -362,14 +422,40 @@ void Interface::deleteRecipe(){
   cout << "Receta Eliminada." << endl;
 }
 
-void Interface::showRecipes(){
+void Interface::deleteAllRecipes(){
+  recipes->deleteAll();
+  cout << "Recetario vaciado." << endl;
+  return;
+}
+
+void Interface::showRecipes(const bool& ask){
   system("cls");
   
+  int i(0), j(0);
+  string cat;
   if (recipes->isEmpty()) {
     cout << "Aun no hay recetas en la lista por mostrar." << endl;
   } else {
-    cout << "Lista de Recetas:" << endl;
-    cout << recipes->toString() << endl;
+    cout << "Lista de Recetas:" << endl; 
+    if(ask){
+      cout << "Quieres buscar recetas por alguna categoria?(No: 'n', Si: #<Categoria>): ";
+      cin.ignore();
+      getline(cin, cat);
+
+      if(cat[0] != 'n' && cat.length() < 3){
+        while(i < recipes->getLastPos()){
+          cout << recipes->retrieve(i).toString() << endl;
+          j++;
+        }
+        if(j == 0){
+          cout << "Ninguna receta encontrada con la categoria: " << cat << endl;
+        }
+      } else {
+        cout << recipes->toString() << endl;
+      }
+    }else{
+      cout << recipes->toString() << endl;
+    }
     
   }
 }
@@ -432,7 +518,7 @@ void Interface::sortRecipes(){
   if(option == 1) recipes->sortDataQuick(Recipe::compareByRecipeName);
   else recipes->sortDataQuick(Recipe::compareByPrepTime);
 
-  this->showRecipes();
+  this->showRecipes(false);
   
 }
 

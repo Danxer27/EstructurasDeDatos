@@ -151,16 +151,13 @@ void List<T,ARRAYSIZE>::deleteData(const int& p) {
 template <class T, int ARRAYSIZE>
 void List<T,ARRAYSIZE>::deleteAll() {
   int i(0);
-  while(i< this->last){
+  while(i < this->last){
     delete data[i];
-    //data[i] = nullptr;
     i++;
   }
   this->last = -1;
 }
 
-
-//check if you can retrieve a pointer
 template <class T, int ARRAYSIZE>
 T& List<T,ARRAYSIZE>::retrieve(const int& p) const {
   if (!this->isValid(p) || data[p] == nullptr) {
@@ -168,7 +165,7 @@ T& List<T,ARRAYSIZE>::retrieve(const int& p) const {
   }
   return *(this->data[p]);
 }
-//convert
+
 template <class T, int ARRAYSIZE>
 std::string List<T,ARRAYSIZE>::toString() const {
   std::string result = "";

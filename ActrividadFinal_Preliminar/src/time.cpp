@@ -140,8 +140,16 @@ int Time::compareByHours(const Time& a, const Time& b){
     return a.getOnlyHours() - b.getOnlyHours();
 }
 
-istream& operator >> (istream&, Time&){
-    
+istream& operator >> (istream& is, Time& t){
+    string temp_num;
+    getline(is, temp_num, '*');
+    t.hours = stoi(temp_num);
+    getline(is, temp_num, '*');
+    t.minutes = stoi(temp_num);
+    getline(is, temp_num, '*');
+    t.seconds = stoi(temp_num);
+
+    return is;
 }
 
 ostream& operator << (ostream& os,const Time& t){

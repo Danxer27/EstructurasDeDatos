@@ -84,9 +84,14 @@ Ingredient& Ingredient::operator=(const Ingredient& i){
     this->measureUnit = i.measureUnit;
 }
 
-istream& operator >> (istream&, Ingredient&)
-{
-    
+istream& operator >> (istream& is, Ingredient& i){
+    string amountStr;
+    getline(is, i.name, '*');
+    getline(is, amountStr, '*');
+    i.amount = stod(amountStr);
+    getline(is, i.measureUnit, '*');
+
+    return is;
 }
 
 ostream& operator << (ostream& os, const Ingredient& i){
