@@ -20,12 +20,12 @@ class Stack {
             Node(const T&);
 
             T& getData();
-            Position getNext();
+            Position getNext() const;
             
             void setData(const T&);
             void setNext(const Position&);
     };
-
+    public:
     class Exception : public std::exception {
         private:
          std::string msg;
@@ -68,8 +68,40 @@ class Stack {
 
 #endif //__STACK_HPP__
 
+//Implementacion del nodo
+
+template <class T>
+Stack<T>::Node::Node() {}
+
+template <class T>
+Stack<T>::Node::Node(const T& value) : data(value) {}
+
+template <class T>
+void Stack<T>::Node::setData(const T& e) {
+  this->data = e;
+}
+
+template <class T>
+void Stack<T>::Node::setNext(const Position& p) {
+  this->next = p;
+}
+
+template <class T>
+T& Stack<T>::Node::getData(){
+  return this->data;
+}
+
+template <class T>
+typename Stack<T>::Position Stack<T>::Node::getNext() const {
+  return this->next;
+}
+
+
+
+//Implementacion de la stack
+
 template<class T>
-Stack<T>::Stack(){}
+Stack<T>::Stack() {}
 
 template<class T>
 Stack<T>::Stack(const Stack& s){
@@ -88,7 +120,7 @@ bool Stack<T>::isEmpty() const {
 
 template<class T>
 void Stack<T>::push(const T& e){
-    Position newNode(new(notrhow) Node(e));
+    Position newNode(new(nothrow) Node(e));
 
     if(newNode == nullptr){
         throw Exception("Memoria no disponible. Stack<T>::push()");
@@ -109,10 +141,11 @@ T Stack<T>::pop(){
 
     this->anchor = aux->getNext();
     
-    T result(this->anchor) // Falta
+    T result(this->anchor->getNext()->getData()); // Falta
 
     delete aux;
 
+    return result;
 }
 
 template<class T>
@@ -121,9 +154,11 @@ T& Stack<T>::getTop(){
         throw Exception("Insuficiencia de datos. Stack<T>::getTop()");
     }
 
-    T result(this->anchor->getData());
+    //T result(this->anchor->getNext()->getData());
+    // T result(this->anchor->getData());
     //aqui hay algo raro
-    return this->anchor->getNext();
+    // return this->anchor->getNext();
+    return this->anchor->getNext()->getData();
 }
 
 
@@ -140,12 +175,12 @@ void Stack<T>::deleteAll(){
 
 template<class T>
 void Stack<T>::addData(const Stack& s){
-    Position aux(l->anchor), newNode, lastInserted(this->getLastPost());
+    Position aux(s.anchor), newNode, lastInserted(nullptr);
 
     while (aux != nullptr) {
-      if (newNode = new Node(aux->getData()) == nullptr) {
+      if (newNode = new(nothrow) Node(aux->getData()) == nullptr) {
         throw Exception(
-            "No memory Available. Unable to add more data -> List::copyAll()");
+            "No memory Available. Unable to add more data -> Stack<T>::addData()");
       }
       if (lastInserted == nullptr) {
         this->anchor = newNode;

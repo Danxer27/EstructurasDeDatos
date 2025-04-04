@@ -9,26 +9,31 @@
 using namespace std;
 
 template<class T>
-class Queue{
+class Queue {
     class Node;
 
     private:
-    typedef Node* Position;
-
+    typedef Node* Position; 
     class Node{
         private:
-            T data;
+            T* dataPtr;
             Position prev = nullptr;
             Position next = nullptr;
         public:
+            class Exception : public Queue<T>::Exception {
+                using Queue<T>::Exception::Exception;
+            };
+
             Node();
             Node(const T&);
 
             void setData(const T&);
+            void setDataPtr(T*);
             void setNext(const Position&);
             void setPrev(const Position&);
 
             T& getData();
+            T* getDataPtr();
             Position getNext() const;
             Position getPrev() const;
     };
@@ -36,7 +41,9 @@ class Queue{
     void addData(const Queue&);
 
     public:
-    Position anchor = nullptr;
+    //Position anchor = nullptr;
+
+    Position header = nullptr;
 
     class Exception : public std::exception {
         private:
@@ -68,6 +75,8 @@ class Queue{
 
     T& getFront();
 
+    void deleteAll();
+
 };
 
 //Implementacion del Nodo;
@@ -75,11 +84,26 @@ template<class T>
 Queue<T>::Node::Node() {}
 
 template<class T>
-Queue<T>::Node::Node(const T& value) : data(value) {}
+Queue<T>::Node::Node(const T& e) : dataPtr(new(nothrow) T(e)){
+    if(dataPtr == nullptr){
+        throw Exception("Memoria Insuficiente. Queue<T>::Node()::Node(cosnt T&)");
+    }
+}
 
 template<class T>
-void Queue<T>::Node::setData(const T& e){
-    this->data = e;
+void Queue<T>::Node::setData(const T& e) {
+    if(this->dataPtr == nullptr){
+        if((this->dataPtr = new(nothrow) T(e)) == nullptr){
+            throw Exception("Memoria no disponible. Queue<T?::setData()");
+        }
+    }else {
+        *this->data = e;
+    }
+}
+
+template<class T>
+void Queue<T>::Node::setDataPtr(T* pe) {
+    this->data = pe;
 }
 
 template<class T>
@@ -93,8 +117,17 @@ void Queue<T>::Node::setPrev(const Position& p){
 }
 
 template<class T>
+T* Queue<T>::Node::getDataPtr(){
+    return this->dataPtr;
+}
+
+
+template<class T>
 T& Queue<T>::Node::getData(){
-    return this->data;
+    if(this->dataPtr == nullptr){
+        throw Queue<T>::Node::Exception("Dato inexistente.");
+    }
+    return *this->dataPtr;
 }
 
 template<class T>
@@ -110,7 +143,7 @@ typename Queue<T>::Position Queue<T>::Node::getPrev() const {
 //Implementacion de la Queue
 
 template<class T>
-Queue<T>::Queue() : anchor(nullptr){ //creo que aqui va un header
+Queue<T>::Queue() : header(new(nothrow) Node) {
     if(this->header == nullptr){
         throw Exception("Memoria Insuficiente. Queue<T>::Queue().");
     }
@@ -120,30 +153,32 @@ Queue<T>::Queue() : anchor(nullptr){ //creo que aqui va un header
 }
 
 template<class T>
-Queue<T>::Queue(const Queue<T>& q){
+Queue<T>::Queue(const Queue<T>& q) : Queue() {
     this->addData(q);
 }
 
 template<class T>
 Queue<T>::~Queue(){
     this->deleteAll();
+
+    delete this->header;
 }
 
 template<class T>
 bool Queue<T>::isEmpty() const {
-    return this->anchor == nullptr;
+    return this->header->getNext() == this->header;
 }
 
 template<class T>
 void Queue<T>::enqueue(const T& e){
-    //Position newNode(new(notrhow) Node(e));
-    //checar como hiba aqui
+    Position newNode;
+
     try {
         if((newNode = new(nothrow) Node(e)) == nullptr){
             throw Exception("Memoria no disponible. Queue<T>::enqueue().");
         }
-    } catch(){ //revisar que hiba aqui
-
+    } catch(const typename Node::Exception& ex){ 
+        throw Exception(ex.what());
     }
 
     newNode->setPrev(this->header->getPrev());
@@ -161,9 +196,10 @@ T Queue<T>::dequeue() {
 
    Position aux(this->header->getNext());
 
-   T result(this->header->getNext()->getData());
+   T result(aux->getData());
+   //T result(this->header->getNext()->getData());
 
-   aux->getPrev()->setPrev(aux->getNext());
+   aux->getPrev()->setNext(aux->getNext());
    aux->getNext()->setPrev(aux->getPrev());
 
    delete aux;
@@ -180,14 +216,49 @@ T& Queue<T>::getFront(){
     return this->header->getNext()->getData();
 }
 
-template<class T>
-void Queue<T>::addData(const Queue& q){
-    Position aux(q.header->getNext()), newNode;
+template <class T>
+void Queue<T>::addData(const Queue<T>& q) {
+  Position aux(q.header->getNext()), newNode;
 
-    while(aux != q.header){
-        //try catch
-        if(newNode = new(notrhow))
+  while (aux != q.header) {
+    try {
+        if ((newNode = new(nothrow) Node(aux->getData())) == nullptr) {
+            throw Exception("Memoria no disponible. Queue<T>::addData()");
+        }
+    } catch (const typename Node::Exception& ex){
+        throw Exception(ex.what());
     }
+    
+    newNode->setPrev(this->header->getPrev());
+    newNode->setNext(this->header);
+
+    this->header->getNext()->setNext(newNode);
+    this->header->setNext(newNode);
+
+    aux = aux->getNext();
+  }
+}
+
+template <class T>
+Queue<T>& Queue<T>::operator=(const Queue<T>& l) {
+  this->deleteAll();
+  this->addData(l);
+  return *this;
+}
+
+template <class T>
+void Queue<T>::deleteAll() {
+  Position aux;
+ 
+  while(this->header->getNext() != header){
+    aux = this->header->getNext();
+
+    this->header->setNext(aux->getNext());
+
+    delete aux;
+  }
+
+  this->header->setPrev(header);
 }
 
 

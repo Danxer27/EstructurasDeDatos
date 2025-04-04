@@ -1,7 +1,7 @@
-#include <iostream>
+// Archivo Main.
+#include "interface.hpp"
 
-int main(){
-
-
- return 0;
+int main() {
+  Interface User;
+  return 0;
 }
