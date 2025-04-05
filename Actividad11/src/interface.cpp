@@ -48,7 +48,6 @@ string Interface::changeNotation(const string& ex) {
   Expresion exp;
 
   exp.setInfix(infNotation);
-  posNotation = exp.getPostfix();
 
   return exp.toString();
 }

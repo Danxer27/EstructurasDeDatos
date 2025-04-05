@@ -137,11 +137,11 @@ T Stack<T>::pop(){
         throw Exception("Insuficiencia de datos. Stack<T>::pop().");
     }
 
+    T result(this->anchor->getData());
+
     Position aux(this->anchor);
 
     this->anchor = aux->getNext();
-    
-    T result(this->anchor->getNext()->getData()); // Falta
 
     delete aux;
 
@@ -158,7 +158,8 @@ T& Stack<T>::getTop(){
     // T result(this->anchor->getData());
     //aqui hay algo raro
     // return this->anchor->getNext();
-    return this->anchor->getNext()->getData();
+    //return this->anchor->getNext()->getData();
+    return this->anchor->getData();
 }
 
 

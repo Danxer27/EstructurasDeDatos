@@ -232,8 +232,8 @@ void Queue<T>::addData(const Queue<T>& q) {
     newNode->setPrev(this->header->getPrev());
     newNode->setNext(this->header);
 
-    this->header->getNext()->setNext(newNode);
-    this->header->setNext(newNode);
+    this->header->getPrev()->setNext(newNode);
+    this->header->setPrev(newNode);
 
     aux = aux->getNext();
   }

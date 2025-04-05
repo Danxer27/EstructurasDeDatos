@@ -11,7 +11,7 @@ void Expresion::setInfix(const Queue<char>& q) {
   this->changeNotation();
 }
 
-Queue<char> Expresion::getPostfix() {
+Queue<char>& Expresion::getPostfix() {
   return this->posNotation;
 }
 

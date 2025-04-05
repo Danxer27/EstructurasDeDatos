@@ -12,7 +12,7 @@ class Expresion {
   Expresion(const string&);
 
   void setInfix(const Queue<char>&);  // Recibe Notacion Infija
-  Queue<char> getPostfix();           // Devuelve Notacion Posfija
+  Queue<char>& getPostfix();           // Devuelve Notacion Posfija
 
   void changeNotation();
 
